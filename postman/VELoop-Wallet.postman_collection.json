@@ -1,0 +1,318 @@
+{
+  "info": {
+    "_postman_id": "veloop-rewards-wallet-api-collection",
+    "name": "VELoop Rewards - Wallet & Withdrawal Backend System",
+    "description": "Comprehensive Postman Collection for VELoop Rewards production-grade demonstration wallet, ledger, and payout system.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "withdrawalId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newuser@veloop.test\",\n  \"password\": \"Password123!\",\n  \"name\": \"New VELoop Member\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Login Demo User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data.token) {",
+                  "  pm.collectionVariables.set('token', res.data.token);",
+                  "  pm.collectionVariables.set('userId', res.data.user._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"demo@veloop.test\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data.token) {",
+                  "  pm.collectionVariables.set('adminToken', res.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@veloop.test\",\n  \"password\": \"AdminPass123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Current Profile (Me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/me", "host": ["{{baseUrl}}"], "path": ["api", "auth", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Wallet & Ledger",
+      "item": [
+        {
+          "name": "Get User Wallet (Backend Authoritative)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/wallet", "host": ["{{baseUrl}}"], "path": ["api", "wallet"] }
+          }
+        },
+        {
+          "name": "Get Wallet Summary & Aggregates",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/wallet/summary", "host": ["{{baseUrl}}"], "path": ["api", "wallet", "summary"] }
+          }
+        },
+        {
+          "name": "Get Transactions Ledger (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/wallet/transactions?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "wallet", "transactions"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Internal / Admin Wallet Operations",
+      "item": [
+        {
+          "name": "Admin Credit Wallet",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"currency\": \"VEs\",\n  \"amount\": 5000,\n  \"source\": \"ADMIN_CREDIT\",\n  \"description\": \"Special event incentive credit\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/wallet/credit", "host": ["{{baseUrl}}"], "path": ["api", "wallet", "credit"] }
+          }
+        },
+        {
+          "name": "Admin Debit Wallet",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"currency\": \"VEs\",\n  \"amount\": 500,\n  \"source\": \"ADMIN_DEBIT\",\n  \"description\": \"Administrative balance adjustment\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/wallet/debit", "host": ["{{baseUrl}}"], "path": ["api", "wallet", "debit"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Payout Catalog",
+      "item": [
+        {
+          "name": "Get Supported Payout Methods",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/payout/methods", "host": ["{{baseUrl}}"], "path": ["api", "payout", "methods"] }
+          }
+        },
+        {
+          "name": "Get Options for UPI",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/payout/options/UPI", "host": ["{{baseUrl}}"], "path": ["api", "payout", "options", "UPI"] }
+          }
+        },
+        {
+          "name": "Get Options for PayPal",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/payout/options/PAYPAL", "host": ["{{baseUrl}}"], "path": ["api", "payout", "options", "PAYPAL"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Withdrawals",
+      "item": [
+        {
+          "name": "Submit Withdrawal (UPI ₹10 / 2,400 VEs)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data.withdrawalId) {",
+                  "  pm.collectionVariables.set('withdrawalId', res.data.withdrawalId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Idempotency-Key", "value": "req_postman_{{$timestamp}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"method\": \"UPI\",\n  \"optionId\": \"upi_10\",\n  \"payoutDetails\": {\n    \"upiId\": \"demo@okhdfcbank\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/withdrawals", "host": ["{{baseUrl}}"], "path": ["api", "withdrawals"] }
+          }
+        },
+        {
+          "name": "Get My Withdrawals",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/withdrawals", "host": ["{{baseUrl}}"], "path": ["api", "withdrawals"] }
+          }
+        },
+        {
+          "name": "Get Withdrawal By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/withdrawals/{{withdrawalId}}", "host": ["{{baseUrl}}"], "path": ["api", "withdrawals", "{{withdrawalId}}"] }
+          }
+        },
+        {
+          "name": "Admin Approve Withdrawal",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reviewNote\": \"Bank transaction reference UTR-987654321\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/withdrawals/{{withdrawalId}}/approve", "host": ["{{baseUrl}}"], "path": ["api", "withdrawals", "{{withdrawalId}}", "approve"] }
+          }
+        },
+        {
+          "name": "Admin Reject Withdrawal & Refund",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Invalid beneficiary UPI address (account inactive)\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/withdrawals/{{withdrawalId}}/reject", "host": ["{{baseUrl}}"], "path": ["api", "withdrawals", "{{withdrawalId}}", "reject"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Admin Overview & Audit Logs",
+      "item": [
+        {
+          "name": "Get System Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/admin/stats", "host": ["{{baseUrl}}"], "path": ["api", "admin", "stats"] }
+          }
+        },
+        {
+          "name": "Get Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/admin/audit-logs?limit=30", "host": ["{{baseUrl}}"], "path": ["api", "admin", "audit-logs"], "query": [{ "key": "limit", "value": "30" }] }
+          }
+        }
+      ]
+    }
+  ]
+}

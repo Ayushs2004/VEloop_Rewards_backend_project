@@ -1,0 +1,48 @@
+{
+  "name": "veloop-rewards-backend",
+  "version": "1.0.0",
+  "description": "Production-grade Wallet & Withdrawal Backend System for VELoop Rewards",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "seed": "node src/seed/seedData.js",
+    "test": "jest --runInBand --detectOpenHandles --forceExit",
+    "test:watch": "jest --watch --runInBand"
+  },
+  "keywords": [
+    "veloop",
+    "wallet",
+    "rewards",
+    "ledger",
+    "withdrawals",
+    "upi",
+    "paypal",
+    "idempotency"
+  ],
+  "author": "VELoop Engineering Submission",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.3.1",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.13.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.1.4",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.1.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 30000,
+    "verbose": true
+  }
+}
