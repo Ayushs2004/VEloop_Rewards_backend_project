@@ -87,8 +87,8 @@ git push -u origin main
 
 6. Click **"Create Web Service"**.
 7. Wait 2–3 minutes for deployment. Once live, note your backend URL:
-   - Example: `https://veloop-rewards-backend.onrender.com`
-   - Verify health: `https://veloop-rewards-backend.onrender.com/health` $\rightarrow$ should return `{"status":"UP"}`.
+   - Example: `https://veloop-rewards-api-hpii.onrender.com`
+   - Verify health: `https://veloop-rewards-api-hpii.onrender.com/health` $\rightarrow$ should return `{"status":"UP"}`.
 
 ---
 
@@ -107,7 +107,7 @@ git push -u origin main
 
    | Key | Value |
    |---|---|
-   | `VITE_API_BASE_URL` | `https://veloop-rewards-backend.onrender.com` *(Your Render backend URL from Step 3 without trailing slash)* |
+   | `VITE_API_BASE_URL` | `https://veloop-rewards-api-hpii.onrender.com` *(Your Render backend URL from Step 3 without trailing slash)* |
 
 6. Click **"Deploy"**.
 7. Within 60 seconds, your site will be live on a `*.vercel.app` URL (e.g., `https://veloop-rewards-frontend.vercel.app`).
