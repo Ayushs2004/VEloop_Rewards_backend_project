@@ -161,7 +161,7 @@ export const LoginPage = () => {
             <input
               type="password"
               className="form-input"
-              placeholder="••••••••••••"
+              placeholder=""
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
