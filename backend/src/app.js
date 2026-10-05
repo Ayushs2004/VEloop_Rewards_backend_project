@@ -38,6 +38,14 @@ app.use(
 app.use(express.json({ limit: '50kb' }));
 app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 
+// Normalize duplicate slashes in request URLs (e.g. //api/auth -> /api/auth)
+app.use((req, res, next) => {
+  if (req.url.includes('//')) {
+    req.url = req.url.replace(/\/{2,}/g, '/');
+  }
+  next();
+});
+
 // Apply general API rate limiter
 app.use('/api', apiLimiter);
 

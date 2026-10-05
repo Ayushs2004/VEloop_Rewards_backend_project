@@ -2,7 +2,8 @@
  * API Client with JWT Interception and Unified Error Extraction
  */
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const rawBase = import.meta.env.VITE_API_BASE_URL || '';
+const BASE_URL = rawBase.replace(/\/+$/, '');
 
 export const apiClient = async (endpoint, options = {}) => {
   const token = localStorage.getItem('veloop_token');
@@ -15,7 +16,8 @@ export const apiClient = async (endpoint, options = {}) => {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const url = `${BASE_URL}${endpoint}`;
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${BASE_URL}${cleanEndpoint}`;
 
   try {
     const response = await fetch(url, {
