@@ -286,11 +286,28 @@ export const AdminPage = () => {
 
         <form onSubmit={handleAdjustmentSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', alignItems: 'flex-end' }}>
           <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label">Target User ID (MongoDB ObjectId)</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+              <label className="form-label" style={{ margin: 0 }}>Target User</label>
+              <button
+                type="button"
+                onClick={() => setAdjustment({ ...adjustment, userId: 'demo' })}
+                style={{
+                  background: 'rgba(99, 102, 241, 0.2)',
+                  border: '1px solid rgba(99, 102, 241, 0.4)',
+                  color: '#a5b4fc',
+                  padding: '2px 8px',
+                  borderRadius: '4px',
+                  fontSize: '0.7rem',
+                  cursor: 'pointer'
+                }}
+              >
+                Use "demo"
+              </button>
+            </div>
             <input
               type="text"
               className="form-input"
-              placeholder="e.g. 64f8a... (use demo user id)"
+              placeholder="e.g. demo, demo@veloop.test, or ObjectId"
               value={adjustment.userId}
               onChange={(e) => setAdjustment({ ...adjustment, userId: e.target.value })}
               required

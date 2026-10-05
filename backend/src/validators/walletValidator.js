@@ -6,8 +6,8 @@ const walletMutationValidator = [
   body('userId')
     .notEmpty()
     .withMessage('Target userId is required')
-    .isMongoId()
-    .withMessage('Invalid userId format'),
+    .isString()
+    .trim(),
   body('amount')
     .isFloat({ gt: 0 })
     .withMessage('Amount must be a positive number greater than 0'),

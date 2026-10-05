@@ -1,7 +1,32 @@
+const mongoose = require('mongoose');
+const User = require('../models/User');
 const walletService = require('../services/walletService');
 const auditService = require('../services/auditService');
-const { sendSuccess } = require('../utils/response');
+const { sendSuccess, sendError } = require('../utils/response');
 const { AUDIT_ACTIONS, TRANSACTION_SOURCES } = require('../config/constants');
+
+/**
+ * Resolve target user by 'demo' keyword, email address, or MongoDB ObjectId
+ */
+const resolveTargetUserId = async (input) => {
+  if (!input) return null;
+  const str = input.trim();
+  if (str.toLowerCase() === 'demo' || str.toLowerCase() === 'demouser') {
+    const demo = await User.findOne({ email: 'demo@veloop.test' });
+    if (demo) return demo._id.toString();
+  }
+  if (str.includes('@')) {
+    const userByEmail = await User.findOne({ email: str.toLowerCase() });
+    if (userByEmail) return userByEmail._id.toString();
+  }
+  if (mongoose.Types.ObjectId.isValid(str)) {
+    return str;
+  }
+  const userByName = await User.findOne({ name: new RegExp(`^${str}$`, 'i') });
+  if (userByName) return userByName._id.toString();
+
+  return null;
+};
 
 /**
  * Fetch authenticated user's wallet
@@ -62,14 +87,25 @@ const creditWallet = async (req, res, next) => {
     const ip = req.ip || req.connection.remoteAddress;
     const userAgent = req.headers['user-agent'];
 
+    const targetUserId = await resolveTargetUserId(userId);
+    if (!targetUserId) {
+      return sendError(
+        res,
+        404,
+        `Target user '${userId}' not found. Please provide a valid email, 'demo', or MongoDB ObjectId.`,
+        'USER_NOT_FOUND'
+      );
+    }
+
     const result = await walletService.creditWallet({
-      userId,
+      userId: targetUserId,
       currency,
       amount: parseFloat(amount),
       source: source || TRANSACTION_SOURCES.ADMIN_CREDIT,
       description: description || `Admin balance adjustment credit by ${req.user.email}`,
       metadata: {
         adminId: req.user.id,
+        originalInput: userId,
         ...metadata
       }
     });
@@ -78,13 +114,14 @@ const creditWallet = async (req, res, next) => {
     await auditService.logAction({
       actorId: req.user.id,
       action: AUDIT_ACTIONS.WALLET_CREDIT,
-      targetUserId: userId,
+      targetUserId: targetUserId,
       targetType: 'WALLET',
       referenceId: result.transaction.transactionId,
       metadata: {
         amount,
         currency: result.transaction.currency,
-        newBalance: result.wallet.ves
+        newBalance: result.wallet.ves,
+        userInput: userId
       },
       ip,
       userAgent
@@ -105,14 +142,25 @@ const debitWallet = async (req, res, next) => {
     const ip = req.ip || req.connection.remoteAddress;
     const userAgent = req.headers['user-agent'];
 
+    const targetUserId = await resolveTargetUserId(userId);
+    if (!targetUserId) {
+      return sendError(
+        res,
+        404,
+        `Target user '${userId}' not found. Please provide a valid email, 'demo', or MongoDB ObjectId.`,
+        'USER_NOT_FOUND'
+      );
+    }
+
     const result = await walletService.debitWallet({
-      userId,
+      userId: targetUserId,
       currency,
       amount: parseFloat(amount),
       source: source || TRANSACTION_SOURCES.ADMIN_DEBIT,
       description: description || `Admin balance adjustment debit by ${req.user.email}`,
       metadata: {
         adminId: req.user.id,
+        originalInput: userId,
         ...metadata
       }
     });
@@ -121,13 +169,14 @@ const debitWallet = async (req, res, next) => {
     await auditService.logAction({
       actorId: req.user.id,
       action: AUDIT_ACTIONS.WALLET_DEBIT,
-      targetUserId: userId,
+      targetUserId: targetUserId,
       targetType: 'WALLET',
       referenceId: result.transaction.transactionId,
       metadata: {
         amount,
         currency: result.transaction.currency,
-        newBalance: result.wallet.ves
+        newBalance: result.wallet.ves,
+        userInput: userId
       },
       ip,
       userAgent
