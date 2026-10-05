@@ -3,8 +3,8 @@
 The backend includes a comprehensive Jest + Supertest automated test suite operating on an isolated in-memory MongoDB runner.
 
 ## Test Summary
-- **Total Test Suites:** 4 passed (`wallet.test.js`, `withdrawal.test.js`, `security.test.js`, `concurrency.test.js`)
-- **Total Test Cases:** 20 passed
+- **Total Test Suites:** 5 passed (`auth.test.js`, `wallet.test.js`, `withdrawal.test.js`, `security.test.js`, `concurrency.test.js`)
+- **Total Test Cases:** 27 passed (100% success rate in ~14.7s)
 - **Code Execution:** Deterministic, zero mock dependencies, verified on actual Mongoose models and queries.
 
 ---
