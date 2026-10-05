@@ -12,6 +12,7 @@ A production-grade, high-throughput financial backend and wallet ledger system b
 **Author:** Ayush Soni ([ayushsonid078@gmail.com](mailto:ayushsonid078@gmail.com))
 
 > ### 🚀 Live Production Deployment
+> - **🌐 Live Web Application:** [https://v-eloop-rewards-backend-project.vercel.app](https://v-eloop-rewards-backend-project.vercel.app)
 > - **⚡ Live Backend API:** [https://veloop-rewards-api-hpii.onrender.com](https://veloop-rewards-api-hpii.onrender.com)
 > - **🩺 API Health Check:** [https://veloop-rewards-api-hpii.onrender.com/health](https://veloop-rewards-api-hpii.onrender.com/health)
 > - **🔑 1-Click Demo User:** `demo@veloop.test` / `Password123!` (Pre-loaded with 25,000 VEs)
