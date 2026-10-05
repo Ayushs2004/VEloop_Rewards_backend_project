@@ -69,11 +69,11 @@ export const LoginPage = () => {
       </div>
 
       <div className="glass-card">
-        {/* Quick Demo Fill Buttons for Evaluator */}
+        {/* 1-Click Quick Demo Login */}
         <div style={{ marginBottom: '1.5rem', background: 'rgba(255, 255, 255, 0.03)', padding: '0.85rem', borderRadius: '0.75rem', border: '1px dashed var(--border-color)' }}>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <ShieldCheck size={14} color="#8b5cf6" />
-            Quick Demo Login (Evaluator Shortcut)
+            1-Click Quick Demo Access
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
             <button

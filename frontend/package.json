@@ -1,6 +1,7 @@
 {
   "name": "veloop-rewards-frontend",
   "private": true,
+  "author": "Ayush Soni <ayushsonid078@gmail.com>",
   "version": "1.0.0",
   "type": "module",
   "scripts": {

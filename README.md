@@ -7,7 +7,15 @@
 [![Tests](https://img.shields.io/badge/Tests-27%20Passed-success.svg)](https://jestjs.io/)
 [![Suites](https://img.shields.io/badge/Suites-5%20Passed-success.svg)](https://jestjs.io/)
 
-A production-grade, authoritative demonstration implementation of the **VELoop Rewards Wallet & Withdrawal Backend System**.
+A production-grade, high-throughput financial backend and wallet ledger system built for **VELoop Rewards**.
+
+**Author:** Ayush Soni ([ayushsonid078@gmail.com](mailto:ayushsonid078@gmail.com))
+
+> ### 🚀 Live Production Deployment
+> - **⚡ Live Backend API:** [https://veloop-backend.onrender.com](https://veloop-backend.onrender.com)
+> - **🩺 API Health Check:** [https://veloop-backend.onrender.com/health](https://veloop-backend.onrender.com/health)
+> - **🔑 1-Click Demo User:** `demo@veloop.test` / `Password123!` (Pre-loaded with 25,000 VEs)
+> - **🛡️ Admin Demo Access:** `admin@veloop.test` / `AdminPass123!`
 
 ---
 
@@ -606,15 +614,15 @@ Scaling a digital reward wallet system from 1,000 users to 1,000,000 users requi
 
 ---
 
-## 11. Known Assumptions & Demonstration Context
+## 11. Production Architecture Assumptions & Context
 
-1. **Non-Production Demonstration:** All payout operations and transactions simulate real financial operations safely and do not connect to production banking rails or real currency reserves.
+1. **Simulated Financial Environment:** All payout operations and transactions simulate real financial operations safely and do not connect to production banking rails or real currency reserves.
 2. **Flexible In-Memory Database:** For evaluation convenience on developer machines without MongoDB installed, the backend includes an embedded `mongodb-memory-server` runner that launches automatically if no local MongoDB instance is detected.
 3. **Frontend Role:** The React demonstration application is designed strictly as a verification harness to prove backend ledger accuracy, anti-tampering, and idempotency.
 
 ---
 
-## 12. Submission Verification Checklist
+## 12. Feature & Technical Verification Matrix
 
 - [x] Full source code created for Node.js Express backend and React Vite frontend.
 - [x] 6 Mongoose models created (`User`, `Wallet`, `WalletTransaction`, `Withdrawal`, `PayoutOption`, `AuditLog`).

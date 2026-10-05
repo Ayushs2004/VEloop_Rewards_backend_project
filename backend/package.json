@@ -20,7 +20,7 @@
     "paypal",
     "idempotency"
   ],
-  "author": "VELoop Engineering Submission",
+  "author": "Ayush Soni <ayushsonid078@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.3",

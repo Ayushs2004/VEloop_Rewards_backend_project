@@ -2,6 +2,7 @@
   "name": "veloop-rewards-system",
   "version": "1.0.0",
   "private": true,
+  "author": "Ayush Soni <ayushsonid078@gmail.com>",
   "description": "VELoop Rewards Wallet & Withdrawal Backend System",
   "scripts": {
     "start": "node backend/src/server.js",
