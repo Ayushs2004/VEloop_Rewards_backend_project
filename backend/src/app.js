@@ -41,6 +41,23 @@ app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 // Apply general API rate limiter
 app.use('/api', apiLimiter);
 
+// Welcome and root status endpoint
+app.get('/', (req, res) => {
+  return sendSuccess(res, 200, 'Welcome to VELoop Rewards Wallet & Withdrawal Backend API.', {
+    service: 'VELoop Rewards API Service',
+    status: 'ONLINE',
+    version: '1.0.0',
+    healthCheck: '/health',
+    endpoints: {
+      auth: '/api/auth',
+      wallet: '/api/wallet',
+      payout: '/api/payout',
+      withdrawals: '/api/withdrawals',
+      admin: '/api/admin'
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   return sendSuccess(res, 200, 'VELoop Rewards API Service is operational.', {
