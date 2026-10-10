@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Coins, Mail, Lock, User, ArrowRight, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { ThemeToggle } from '../components/ThemeToggle';
 
 export const LoginPage = () => {
   const { login, register } = useAuth();
@@ -45,7 +46,12 @@ export const LoginPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: '420px', margin: '4.5rem auto 3rem', padding: '0 1rem' }} className="fade-in">
+    <div style={{ maxWidth: '420px', margin: '3.5rem auto 3rem', padding: '0 1rem' }} className="fade-in">
+      {/* Top Controls */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.25rem' }}>
+        <ThemeToggle showLabel={true} />
+      </div>
+
       {/* Brand Header */}
       <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
         <div
@@ -169,7 +175,7 @@ export const LoginPage = () => {
                 <input
                   type="text"
                   className="form-input"
-                  placeholder="e.g. Alex Morgan"
+                  placeholder="Your Name"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -220,7 +226,7 @@ export const LoginPage = () => {
               <input
                 type={showPassword ? 'text' : 'password'}
                 className="form-input"
-                placeholder="••••••••••••"
+                placeholder="ID Password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

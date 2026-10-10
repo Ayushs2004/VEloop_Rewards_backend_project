@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Wallet, Shield, LogOut, ArrowRightLeft, Sparkles, Coins } from 'lucide-react';
+import { Wallet, Shield, LogOut, ArrowRightLeft, Coins } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar = ({ activePage, setActivePage, walletBalance }) => {
   const { user, logout, isAdmin } = useAuth();
@@ -96,6 +97,9 @@ export const Navbar = ({ activePage, setActivePage, walletBalance }) => {
               <span className="tabular-nums">{Number(walletBalance).toLocaleString()} VEs</span>
             </div>
           )}
+
+          {/* Theme Selector */}
+          <ThemeToggle />
 
           {/* User Profile Pill */}
           <div className="user-badge">
