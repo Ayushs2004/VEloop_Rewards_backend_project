@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { payoutApi, withdrawalApi, walletApi } from '../api/client';
-import { ArrowLeft, CheckCircle2, AlertTriangle, ShieldCheck, CreditCard, Mail, ArrowRight } from 'lucide-react';
+import {
+  ArrowLeft,
+  CheckCircle2,
+  AlertTriangle,
+  ShieldCheck,
+  CreditCard,
+  Mail,
+  ArrowRight,
+  Smartphone,
+  Gift,
+  Copy,
+  Check,
+  Clock,
+  Coins
+} from 'lucide-react';
 
 export const PayoutPage = ({ onBackToWallet }) => {
   const [methods, setMethods] = useState([]);
@@ -12,10 +26,13 @@ export const PayoutPage = ({ onBackToWallet }) => {
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [step, setStep] = useState(1); // 1: Select Method & Option, 2: Enter Details & Confirm, 3: Success
+  const [step, setStep] = useState(1); // 1: Choose Option, 2: Review & Confirm, 3: Success
   const [successData, setSuccessData] = useState(null);
   const [error, setError] = useState(null);
-  const [idempotencyKey, setIdempotencyKey] = useState(`idem_${Date.now()}_${Math.random().toString(36).substring(7)}`);
+  const [copiedReceiptId, setCopiedReceiptId] = useState(false);
+  const [idempotencyKey, setIdempotencyKey] = useState(
+    `idem_${Date.now()}_${Math.random().toString(36).substring(7)}`
+  );
 
   // Load methods and user balance on mount
   useEffect(() => {
@@ -29,7 +46,6 @@ export const PayoutPage = ({ onBackToWallet }) => {
 
         if (methodsRes.success) {
           setMethods(methodsRes.data);
-          // Default to first active method (usually UPI)
           const firstActive = methodsRes.data.find((m) => m.active);
           if (firstActive) {
             setSelectedMethod(firstActive);
@@ -39,7 +55,7 @@ export const PayoutPage = ({ onBackToWallet }) => {
           setUserBalance(walletRes.data.ves || 0);
         }
       } catch (err) {
-        setError(err.message || 'Failed to initialize payout catalog');
+        setError(err.message || 'Failed to initialize payout methods');
       } finally {
         setLoading(false);
       }
@@ -47,7 +63,7 @@ export const PayoutPage = ({ onBackToWallet }) => {
     init();
   }, []);
 
-  // When selectedMethod changes, fetch database-configured options for that method
+  // When selectedMethod changes, fetch available denominations
   useEffect(() => {
     if (!selectedMethod) return;
 
@@ -58,13 +74,12 @@ export const PayoutPage = ({ onBackToWallet }) => {
         const res = await payoutApi.getOptionsByMethod(selectedMethod.method);
         if (res.success) {
           setOptions(res.data);
-          // Auto select first option if available
           if (res.data.length > 0) {
             setSelectedOption(res.data[0]);
           }
         }
       } catch (err) {
-        setError(err.message || 'Failed to fetch options for method');
+        setError(err.message || 'Failed to fetch options for payout method');
       }
     };
 
@@ -81,17 +96,22 @@ export const PayoutPage = ({ onBackToWallet }) => {
     }
 
     if (userBalance < selectedOption.requiredAmount) {
-      setError(`Insufficient VEs balance. You need ${selectedOption.requiredAmount.toLocaleString()} VEs for this payout, but have ${userBalance.toLocaleString()} VEs.`);
+      setError(
+        `Insufficient VEs balance. This payout requires ${selectedOption.requiredAmount.toLocaleString()} VEs, but your balance is ${userBalance.toLocaleString()} VEs.`
+      );
       return;
     }
 
     if (selectedMethod.method === 'UPI' && !payoutDetails.upiId.trim()) {
-      setError('Please enter a valid UPI ID (e.g. username@bank).');
+      setError('Please enter a valid UPI ID / Virtual Payment Address (e.g. name@bank).');
       return;
     }
 
-    if (['PAYPAL', 'AMAZON_GIFT_CARD', 'GOOGLE_PLAY_GIFT_CARD'].includes(selectedMethod.method) && !payoutDetails.email.trim()) {
-      setError('Please enter a valid delivery email address.');
+    if (
+      ['PAYPAL', 'AMAZON_GIFT_CARD', 'GOOGLE_PLAY_GIFT_CARD'].includes(selectedMethod.method) &&
+      !payoutDetails.email.trim()
+    ) {
+      setError('Please enter a valid recipient email address.');
       return;
     }
 
@@ -119,42 +139,86 @@ export const PayoutPage = ({ onBackToWallet }) => {
         setStep(3);
       }
     } catch (err) {
-      setError(err.message || 'Withdrawal failed. Please check your balance or payout details.');
+      setError(err.message || 'Payout request failed. Please check your balance or payout details.');
     } finally {
       setSubmitting(false);
     }
   };
 
+  const getMethodIcon = (methodCode) => {
+    switch (methodCode) {
+      case 'UPI':
+        return <Smartphone size={18} color="#38bdf8" />;
+      case 'PAYPAL':
+        return <CreditCard size={18} color="#818cf8" />;
+      case 'AMAZON_GIFT_CARD':
+      case 'GOOGLE_PLAY_GIFT_CARD':
+        return <Gift size={18} color="#fbbf24" />;
+      default:
+        return <CreditCard size={18} color="#a78bfa" />;
+    }
+  };
+
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '4rem 1rem', color: 'var(--text-secondary)' }}>
-        Loading backend payout methods and live rates...
+      <div style={{ textAlign: 'center', padding: '6rem 1rem', color: 'var(--text-secondary)' }}>
+        <p style={{ fontWeight: 600 }}>Loading verified payout channels...</p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-        <button
-          className="btn-secondary"
-          onClick={onBackToWallet}
-          style={{ padding: '0.5rem 0.85rem' }}
+    <div style={{ maxWidth: '820px', margin: '0 auto' }} className="fade-in">
+      {/* Top Breadcrumb & Return Action */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={onBackToWallet}
+            style={{ padding: '0.45rem 0.85rem', fontSize: '0.82rem' }}
+          >
+            <ArrowLeft size={14} />
+            <span>Wallet</span>
+          </button>
+          <div>
+            <h1 style={{ fontSize: '1.65rem', fontWeight: 700 }}>Redeem Rewards</h1>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', marginTop: '0.15rem' }}>
+              Convert verified VEs balance into cash or digital gift cards
+            </p>
+          </div>
+        </div>
+
+        {/* Step Indicator */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            background: 'var(--bg-secondary)',
+            padding: '0.35rem 0.75rem',
+            borderRadius: '9999px',
+            border: '1px solid var(--border-color)',
+            fontSize: '0.78rem'
+          }}
         >
-          <ArrowLeft size={16} /> Back to Wallet
-        </button>
-        <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800 }}>Redeem Rewards</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-            Instant platform payout with atomic balance debit & ledger verification
-          </p>
+          <span style={{ fontWeight: step === 1 ? 700 : 500, color: step === 1 ? '#818cf8' : 'var(--text-muted)' }}>
+            1. Select
+          </span>
+          <span style={{ color: 'var(--text-muted)' }}>›</span>
+          <span style={{ fontWeight: step === 2 ? 700 : 500, color: step === 2 ? '#818cf8' : 'var(--text-muted)' }}>
+            2. Review
+          </span>
+          <span style={{ color: 'var(--text-muted)' }}>›</span>
+          <span style={{ fontWeight: step === 3 ? 700 : 500, color: step === 3 ? '#34d399' : 'var(--text-muted)' }}>
+            3. Receipt
+          </span>
         </div>
       </div>
 
       {error && (
         <div className="alert-banner error">
-          <AlertTriangle size={18} />
+          <AlertTriangle size={18} style={{ flexShrink: 0 }} />
           <span>{error}</span>
         </div>
       )}
@@ -162,11 +226,20 @@ export const PayoutPage = ({ onBackToWallet }) => {
       {/* STEP 1: METHOD & DENOMINATION SELECTION */}
       {step === 1 && (
         <div>
-          {/* Method Tabs */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label className="form-label" style={{ fontSize: '0.95rem', fontWeight: 600 }}>
-              1. Select Payout Method
-            </label>
+          {/* Method Selection */}
+          <div style={{ marginBottom: '1.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
+              <label className="form-label" style={{ fontWeight: 600, fontSize: '0.88rem', margin: 0 }}>
+                1. Select Payout Channel
+              </label>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                Available Balance:{' '}
+                <strong className="tabular-nums" style={{ color: '#c4b5fd' }}>
+                  {userBalance.toLocaleString()} VEs
+                </strong>
+              </span>
+            </div>
+
             <div className="payout-methods-grid">
               {methods.map((m) => {
                 const isSelected = selectedMethod?.method === m.method;
@@ -177,20 +250,24 @@ export const PayoutPage = ({ onBackToWallet }) => {
                     className="glass-card"
                     style={{
                       cursor: m.active ? 'pointer' : 'not-allowed',
-                      opacity: m.active ? 1 : 0.5,
-                      borderColor: isSelected ? '#8b5cf6' : 'var(--border-color)',
-                      background: isSelected ? 'rgba(139, 92, 246, 0.12)' : 'var(--bg-card)',
-                      boxShadow: isSelected ? '0 0 20px rgba(139, 92, 246, 0.2)' : 'none'
+                      opacity: m.active ? 1 : 0.45,
+                      borderColor: isSelected ? 'var(--primary)' : 'var(--border-color)',
+                      background: isSelected ? 'rgba(99, 102, 241, 0.1)' : 'var(--bg-card)',
+                      boxShadow: isSelected ? '0 0 0 1px var(--primary), var(--shadow-card)' : 'var(--shadow-card)',
+                      padding: '1.25rem'
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontWeight: 700, fontSize: '1rem' }}>{m.name}</span>
-                      {isSelected && <CheckCircle2 size={18} color="#8b5cf6" />}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        {getMethodIcon(m.method)}
+                        <span style={{ fontWeight: 600, fontSize: '0.92rem' }}>{m.name}</span>
+                      </div>
+                      {isSelected && <CheckCircle2 size={16} color="#818cf8" />}
                     </div>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.4rem' }}>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '0.45rem', lineHeight: 1.4 }}>
                       {m.description}
                     </p>
-                    <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>
+                    <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: '#34d399', fontWeight: 600 }}>
                       Min payout: {m.currency === 'INR' ? '₹' : '$'}{m.minimumPayout}
                     </div>
                   </div>
@@ -199,16 +276,11 @@ export const PayoutPage = ({ onBackToWallet }) => {
             </div>
           </div>
 
-          {/* Options Grid */}
-          <div style={{ marginBottom: '2rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-              <label className="form-label" style={{ fontSize: '0.95rem', fontWeight: 600, margin: 0 }}>
-                2. Select Denomination ({options.length} options from backend)
-              </label>
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                Your Balance: <strong style={{ color: '#8b5cf6' }}>{userBalance.toLocaleString()} VEs</strong>
-              </span>
-            </div>
+          {/* Denominations Grid */}
+          <div style={{ marginBottom: '1.75rem' }}>
+            <label className="form-label" style={{ fontWeight: 600, fontSize: '0.88rem', marginBottom: '0.65rem' }}>
+              2. Select Denomination ({options.length} options)
+            </label>
 
             <div className="payout-options-grid">
               {options.map((opt) => {
@@ -222,30 +294,41 @@ export const PayoutPage = ({ onBackToWallet }) => {
                     className="glass-card"
                     style={{
                       cursor: 'pointer',
-                      borderColor: isSelected ? '#8b5cf6' : canAfford ? 'var(--border-color)' : 'rgba(239, 68, 68, 0.3)',
+                      borderColor: isSelected
+                        ? 'var(--primary)'
+                        : canAfford
+                        ? 'var(--border-color)'
+                        : 'rgba(239, 68, 68, 0.25)',
                       background: isSelected
-                        ? 'rgba(139, 92, 246, 0.18)'
+                        ? 'rgba(99, 102, 241, 0.14)'
                         : canAfford
                         ? 'var(--bg-card)'
                         : 'rgba(239, 68, 68, 0.04)',
+                      boxShadow: isSelected ? '0 0 0 1px var(--primary)' : 'none',
                       textAlign: 'center',
                       padding: '1.25rem 1rem'
                     }}
                   >
-                    <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff' }}>
+                    <div
+                      className="tabular-nums"
+                      style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em' }}
+                    >
                       {opt.payoutCurrency === 'INR' ? '₹' : '$'}
                       {opt.payoutValue}
                     </div>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4b5fd', marginTop: '0.35rem' }}>
+                    <div
+                      className="tabular-nums"
+                      style={{ fontSize: '0.82rem', fontWeight: 600, color: '#c4b5fd', marginTop: '0.35rem' }}
+                    >
                       {opt.requiredAmount.toLocaleString()} VEs
                     </div>
                     <div style={{ marginTop: '0.75rem' }}>
                       {canAfford ? (
-                        <span style={{ fontSize: '0.7rem', color: '#10b981', fontWeight: 600 }}>
+                        <span style={{ fontSize: '0.72rem', color: '#34d399', fontWeight: 600 }}>
                           ✓ Eligible
                         </span>
                       ) : (
-                        <span style={{ fontSize: '0.7rem', color: '#ef4444', fontWeight: 600 }}>
+                        <span style={{ fontSize: '0.72rem', color: '#f87171', fontWeight: 600 }}>
                           Need +{(opt.requiredAmount - userBalance).toLocaleString()} VEs
                         </span>
                       )}
@@ -256,11 +339,11 @@ export const PayoutPage = ({ onBackToWallet }) => {
             </div>
           </div>
 
-          {/* Step 3: Enter Details */}
+          {/* Recipient Details & Submit */}
           {selectedOption && (
             <div className="glass-card" style={{ marginBottom: '2rem' }}>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1rem' }}>
-                3. Enter Payout Details
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '1rem' }}>
+                3. Recipient Destination
               </h3>
 
               {selectedMethod.method === 'UPI' ? (
@@ -269,30 +352,30 @@ export const PayoutPage = ({ onBackToWallet }) => {
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="yourname@okhdfcbank or 9876543210@paytm"
+                    placeholder="e.g. mobile@paytm or username@okhdfcbank"
                     value={payoutDetails.upiId}
                     onChange={(e) => setPayoutDetails({ ...payoutDetails, upiId: e.target.value })}
                   />
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
-                    Make sure your UPI ID is linked to your active bank account.
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.4rem', display: 'block' }}>
+                    Payout will be routed directly to your bank account linked to this UPI VPA.
                   </span>
                 </div>
               ) : (
                 <div className="form-group">
                   <label className="form-label">
-                    {selectedMethod.method === 'PAYPAL' ? 'PayPal Email' : 'Delivery Email Address'}
+                    {selectedMethod.method === 'PAYPAL' ? 'PayPal Email Address' : 'Voucher Delivery Email'}
                   </label>
                   <input
                     type="email"
                     className="form-input"
-                    placeholder="user@example.com"
+                    placeholder="recipient@example.com"
                     value={payoutDetails.email}
                     onChange={(e) => setPayoutDetails({ ...payoutDetails, email: e.target.value })}
                   />
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.4rem', display: 'block' }}>
                     {selectedMethod.method === 'PAYPAL'
-                      ? 'Funds will be transferred directly to this PayPal account.'
-                      : 'Digital voucher code will be sent to this email address.'}
+                      ? 'Funds will be transferred to your registered PayPal email account.'
+                      : 'Digital voucher claim code will be dispatched to this email.'}
                   </span>
                 </div>
               )}
@@ -301,48 +384,53 @@ export const PayoutPage = ({ onBackToWallet }) => {
                 type="button"
                 className="btn-primary"
                 onClick={handleProceedToConfirmation}
-                style={{ width: '100%', marginTop: '1rem' }}
+                style={{ width: '100%', marginTop: '0.75rem', padding: '0.75rem' }}
               >
-                Proceed to Review & Confirm <ArrowRight size={18} />
+                <span>Review & Confirm Request</span>
+                <ArrowRight size={16} />
               </button>
             </div>
           )}
         </div>
       )}
 
-      {/* STEP 2: REVIEW & CONFIRMATION MODAL */}
+      {/* STEP 2: REVIEW & CONFIRMATION */}
       {step === 2 && selectedOption && (
         <div className="glass-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.25rem' }}>
-            <ShieldCheck size={22} color="#10b981" />
-            <h2 style={{ fontSize: '1.35rem', fontWeight: 800 }}>Confirm Payout Request</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '1rem' }}>
+            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <ShieldCheck size={18} color="#34d399" />
+            </div>
+            <div>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Review Payout Details</h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
+                Verify your payout recipient information before confirming the debit
+              </p>
+            </div>
           </div>
 
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-            Please review the financial transaction details below. Upon confirmation, your VEs balance will be
-            immediately deducted according to Option A financial strategy and a pending withdrawal recorded.
-          </p>
-
+          {/* Breakdown receipt */}
           <div
             style={{
-              background: 'rgba(0, 0, 0, 0.35)',
-              borderRadius: '0.75rem',
+              background: 'var(--bg-input)',
+              borderRadius: 'var(--radius-md)',
               padding: '1.25rem',
               marginBottom: '1.5rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '0.75rem',
-              border: '1px solid var(--border-color)'
+              border: '1px solid var(--border-subtle)',
+              fontSize: '0.88rem'
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Payout Method:</span>
+              <span style={{ color: 'var(--text-secondary)' }}>Method:</span>
               <span style={{ fontWeight: 600 }}>{selectedMethod.name}</span>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Denomination / Amount:</span>
-              <span style={{ fontWeight: 700, color: '#10b981' }}>
+              <span style={{ color: 'var(--text-secondary)' }}>Payout Value:</span>
+              <span className="tabular-nums" style={{ fontWeight: 700, color: '#34d399' }}>
                 {selectedOption.payoutCurrency === 'INR' ? '₹' : '$'}
                 {selectedOption.payoutValue}
               </span>
@@ -350,37 +438,51 @@ export const PayoutPage = ({ onBackToWallet }) => {
 
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: 'var(--text-secondary)' }}>Current Balance:</span>
-              <span>{userBalance.toLocaleString()} VEs</span>
+              <span className="tabular-nums">{userBalance.toLocaleString()} VEs</span>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#ef4444', fontWeight: 600 }}>VEs Required (Debited):</span>
-              <span style={{ color: '#ef4444', fontWeight: 700 }}>
+              <span style={{ color: '#f87171', fontWeight: 600 }}>Balance to Debit:</span>
+              <span className="tabular-nums" style={{ color: '#f87171', fontWeight: 700 }}>
                 -{selectedOption.requiredAmount.toLocaleString()} VEs
               </span>
             </div>
 
-            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.5rem', display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontWeight: 700 }}>Remaining Balance After Payout:</span>
-              <span style={{ fontWeight: 800, color: '#8b5cf6' }}>
+            <div
+              style={{
+                borderTop: '1px solid var(--border-subtle)',
+                paddingTop: '0.65rem',
+                display: 'flex',
+                justifyContent: 'space-between'
+              }}
+            >
+              <span style={{ fontWeight: 600 }}>Balance After Payout:</span>
+              <span className="tabular-nums" style={{ fontWeight: 800, color: '#c4b5fd' }}>
                 {(userBalance - selectedOption.requiredAmount).toLocaleString()} VEs
               </span>
             </div>
 
-            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.5rem', display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Recipient Destination:</span>
+            <div
+              style={{
+                borderTop: '1px solid var(--border-subtle)',
+                paddingTop: '0.65rem',
+                display: 'flex',
+                justifyContent: 'space-between'
+              }}
+            >
+              <span style={{ color: 'var(--text-secondary)' }}>Destination Recipient:</span>
               <span style={{ fontWeight: 600, color: '#6ee7b7' }}>
                 {payoutDetails.upiId || payoutDetails.email}
               </span>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              <span>Idempotency Key:</span>
-              <span style={{ fontFamily: 'monospace' }}>{idempotencyKey}</span>
+              <span>Transaction Ref (Idempotency):</span>
+              <span className="font-mono">{idempotencyKey}</span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
             <button
               type="button"
               className="btn-secondary"
@@ -388,7 +490,7 @@ export const PayoutPage = ({ onBackToWallet }) => {
               style={{ flex: 1 }}
               disabled={submitting}
             >
-              Modify Details
+              Back
             </button>
             <button
               type="button"
@@ -397,71 +499,77 @@ export const PayoutPage = ({ onBackToWallet }) => {
               style={{ flex: 2 }}
               disabled={submitting}
             >
-              {submitting ? 'Processing Transaction...' : 'Confirm & Submit Withdrawal'}
+              {submitting ? 'Processing Transaction...' : 'Confirm & Submit Payout'}
             </button>
           </div>
         </div>
       )}
 
-      {/* STEP 3: SUCCESS CONFIRMATION */}
+      {/* STEP 3: SUCCESS RECEIPT */}
       {step === 3 && successData && (
         <div className="glass-card" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
           <div
             style={{
-              width: '64px',
-              height: '64px',
+              width: '56px',
+              height: '56px',
               borderRadius: '50%',
-              background: 'rgba(16, 185, 129, 0.2)',
-              color: '#10b981',
+              background: 'rgba(16, 185, 129, 0.15)',
+              color: '#34d399',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              margin: '0 auto 1.5rem'
+              margin: '0 auto 1.25rem'
             }}
           >
-            <CheckCircle2 size={36} />
+            <CheckCircle2 size={32} />
           </div>
 
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '0.5rem' }}>
-            Withdrawal Request Submitted!
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '0.35rem' }}>
+            Payout Request Submitted
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '480px', margin: '0 auto 1.5rem', fontSize: '0.95rem' }}>
-            Your request has been successfully registered on the immutable ledger. Status is currently{' '}
-            <strong style={{ color: '#f59e0b' }}>PENDING</strong>.
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '440px', margin: '0 auto 1.5rem', fontSize: '0.88rem' }}>
+            Your withdrawal has been registered on the immutable ledger. Current status is{' '}
+            <strong style={{ color: '#fbbf24' }}>PENDING</strong> review.
           </p>
 
           <div
             style={{
-              background: 'rgba(0, 0, 0, 0.3)',
-              borderRadius: '0.75rem',
-              padding: '1rem',
-              maxWidth: '420px',
+              background: 'var(--bg-input)',
+              borderRadius: 'var(--radius-md)',
+              padding: '1.25rem',
+              maxWidth: '440px',
               margin: '0 auto 2rem',
               textAlign: 'left',
-              fontSize: '0.85rem'
+              fontSize: '0.85rem',
+              border: '1px solid var(--border-subtle)'
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <span style={{ color: 'var(--text-muted)' }}>Withdrawal ID:</span>
-              <span style={{ fontFamily: 'monospace', fontWeight: 600 }}>
+              <span className="font-mono" style={{ fontWeight: 600 }}>
                 {successData.data?.withdrawalId}
               </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <span style={{ color: 'var(--text-muted)' }}>Ledger Debit Ref:</span>
-              <span style={{ fontFamily: 'monospace' }}>
+              <span className="font-mono" style={{ color: 'var(--text-secondary)' }}>
                 {successData.meta?.transactionId}
               </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-muted)' }}>New VEs Balance:</span>
-              <span style={{ color: '#8b5cf6', fontWeight: 700 }}>
+              <span style={{ color: 'var(--text-muted)' }}>Updated VEs Balance:</span>
+              <span className="tabular-nums" style={{ color: '#c4b5fd', fontWeight: 700 }}>
                 {Number(successData.meta?.remainingBalance || 0).toLocaleString()} VEs
               </span>
             </div>
           </div>
 
-          <button className="btn-primary" onClick={onBackToWallet} style={{ padding: '0.75rem 2rem' }}>
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={onBackToWallet}
+            style={{ padding: '0.75rem 2rem' }}
+          >
             Return to Wallet & View Ledger
           </button>
         </div>

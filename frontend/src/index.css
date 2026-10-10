@@ -1,51 +1,88 @@
 :root {
-  --bg-primary: #0a0e17;
-  --bg-secondary: #111827;
-  --bg-card: rgba(17, 24, 39, 0.75);
-  --bg-card-hover: rgba(31, 41, 55, 0.85);
+  /* Surfaces & Canvas */
+  --bg-primary: #090d16;
+  --bg-secondary: #0f1523;
+  --bg-surface-elevated: #151d2f;
+  --bg-card: rgba(21, 29, 47, 0.72);
+  --bg-card-hover: rgba(28, 38, 61, 0.85);
+  --bg-input: #0b101c;
+
+  /* Hairline Borders */
   --border-color: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.16);
   --border-focus: #6366f1;
 
+  /* Primary Brand */
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-light: rgba(99, 102, 241, 0.14);
+  --primary-border: rgba(99, 102, 241, 0.35);
+
+  /* Currencies */
   --accent-ve: #8b5cf6;
-  --accent-sve: #3b82f6;
-  --accent-gem: #ec4899;
+  --accent-sve: #38bdf8;
+  --accent-gem: #f43f5e;
   --accent-token: #10b981;
   --accent-spin: #f59e0b;
 
-  --text-primary: #f9fafb;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
+  /* Typography Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
 
+  /* Semantic Statuses */
   --status-pending: #f59e0b;
   --status-approved: #10b981;
   --status-rejected: #ef4444;
 
-  --font-heading: 'Outfit', sans-serif;
-  --font-body: 'Poppins', sans-serif;
+  /* Typography Stacks */
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Geometry & Shadows */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  --shadow-hover: 0 20px 35px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-body);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 40%);
+    radial-gradient(ellipse 90% 45% at 50% -10%, rgba(99, 102, 241, 0.12) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(9, 13, 22, 0) 0%, rgba(9, 13, 22, 1) 100%);
   background-attachment: fixed;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+  line-height: 1.25;
 }
 
 a {
@@ -58,7 +95,8 @@ button {
   cursor: pointer;
   border: none;
   outline: none;
-  transition: all 0.2s ease-in-out;
+  background: none;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 input, select, textarea {
@@ -66,18 +104,52 @@ input, select, textarea {
   color: inherit;
 }
 
-/* Scrollbar Styling */
+/* Tabular numbers for financial and numerical accuracy */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Precision Scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* Animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(0.98); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
 }

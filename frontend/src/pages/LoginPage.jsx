@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Sparkles, Key, Mail, User, ArrowRight, ShieldCheck, Eye, EyeOff } from 'lucide-react';
+import { Coins, Mail, Lock, User, ArrowRight, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 export const LoginPage = () => {
   const { login, register } = useAuth();
@@ -24,7 +24,7 @@ export const LoginPage = () => {
         await login(email, password);
       }
     } catch (err) {
-      setError(err.message || 'Authentication failed. Please check your credentials.');
+      setError(err.message || 'Authentication failed. Please verify your credentials.');
     } finally {
       setLoading(false);
     }
@@ -45,69 +45,93 @@ export const LoginPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: '440px', margin: '4rem auto', padding: '0 1rem' }}>
-      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+    <div style={{ maxWidth: '420px', margin: '4.5rem auto 3rem', padding: '0 1rem' }} className="fade-in">
+      {/* Brand Header */}
+      <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
         <div
           style={{
-            width: '54px',
-            height: '54px',
+            width: '48px',
+            height: '48px',
             margin: '0 auto 1rem',
-            borderRadius: '16px',
-            background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899)',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 8px 25px rgba(99, 102, 241, 0.4)'
+            boxShadow: '0 8px 24px -4px rgba(79, 70, 229, 0.45)',
+            color: '#fff'
           }}
         >
-          <Sparkles size={28} color="#fff" />
+          <Coins size={24} />
         </div>
-        <h1 style={{ fontSize: '2rem', fontWeight: 800 }}>VELoop Rewards</h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
-          Demonstration Wallet & Verified Payout System
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em' }}>VELoop Rewards</h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginTop: '0.35rem' }}>
+          {isRegister ? 'Create an account to activate your rewards wallet' : 'Sign in to manage balances & redeem payouts'}
         </p>
       </div>
 
       <div className="glass-card">
-        {/* 1-Click Quick Demo Login */}
-        <div style={{ marginBottom: '1.5rem', background: 'rgba(255, 255, 255, 0.03)', padding: '0.85rem', borderRadius: '0.75rem', border: '1px dashed var(--border-color)' }}>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <ShieldCheck size={14} color="#8b5cf6" />
-            1-Click Quick Demo Access
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+        {/* Quick Demo Access Pills */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0.5rem 0.75rem',
+            marginBottom: '1.25rem',
+            borderRadius: 'var(--radius-md)',
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid var(--border-subtle)'
+          }}
+        >
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+            Quick fill:
+          </span>
+          <div style={{ display: 'flex', gap: '0.4rem' }}>
             <button
               type="button"
-              className="btn-secondary"
+              className="copy-pill"
               onClick={fillDemoUser}
-              style={{ fontSize: '0.8rem', padding: '0.5rem' }}
+              title="Populate demo user credentials"
             >
-              Demo User (25k VEs)
+              Demo User
             </button>
             <button
               type="button"
-              className="btn-secondary"
+              className="copy-pill"
               onClick={fillDemoAdmin}
-              style={{ fontSize: '0.8rem', padding: '0.5rem', color: '#ec4899' }}
+              title="Populate admin credentials"
+              style={{ color: '#f472b6' }}
             >
               Admin Demo
             </button>
           </div>
         </div>
 
-        {error && <div className="alert-banner error">{error}</div>}
-
-        <div style={{ display: 'flex', borderBottom: '1px solid var(--border-color)', marginBottom: '1.5rem' }}>
+        {/* Segmented Auth Mode Switch */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            background: 'var(--bg-input)',
+            borderRadius: 'var(--radius-md)',
+            padding: '3px',
+            marginBottom: '1.5rem',
+            border: '1px solid var(--border-subtle)'
+          }}
+        >
           <button
             type="button"
             onClick={() => { setIsRegister(false); setError(null); }}
             style={{
-              flex: 1,
-              padding: '0.75rem',
-              background: 'transparent',
-              color: !isRegister ? '#8b5cf6' : 'var(--text-muted)',
-              borderBottom: !isRegister ? '2px solid #8b5cf6' : 'none',
-              fontWeight: 600
+              padding: '0.55rem',
+              borderRadius: '7px',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              color: !isRegister ? '#ffffff' : 'var(--text-muted)',
+              background: !isRegister ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+              boxShadow: !isRegister ? '0 1px 3px rgba(0, 0, 0, 0.3)' : 'none',
+              transition: 'all 0.16s ease'
             }}
           >
             Sign In
@@ -116,17 +140,26 @@ export const LoginPage = () => {
             type="button"
             onClick={() => { setIsRegister(true); setError(null); }}
             style={{
-              flex: 1,
-              padding: '0.75rem',
-              background: 'transparent',
-              color: isRegister ? '#8b5cf6' : 'var(--text-muted)',
-              borderBottom: isRegister ? '2px solid #8b5cf6' : 'none',
-              fontWeight: 600
+              padding: '0.55rem',
+              borderRadius: '7px',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              color: isRegister ? '#ffffff' : 'var(--text-muted)',
+              background: isRegister ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+              boxShadow: isRegister ? '0 1px 3px rgba(0, 0, 0, 0.3)' : 'none',
+              transition: 'all 0.16s ease'
             }}
           >
             Create Account
           </button>
         </div>
+
+        {error && (
+          <div className="alert-banner error" style={{ padding: '0.75rem 0.95rem' }}>
+            <AlertCircle size={16} style={{ flexShrink: 0 }} />
+            <span>{error}</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           {isRegister && (
@@ -136,10 +169,21 @@ export const LoginPage = () => {
                 <input
                   type="text"
                   className="form-input"
-                  placeholder="Name"
+                  placeholder="e.g. Alex Morgan"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  style={{ paddingLeft: '2.4rem' }}
+                />
+                <User
+                  size={16}
+                  style={{
+                    position: 'absolute',
+                    left: '0.85rem',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: 'var(--text-muted)'
+                  }}
                 />
               </div>
             </div>
@@ -147,27 +191,50 @@ export const LoginPage = () => {
 
           <div className="form-group">
             <label className="form-label">Email Address</label>
-            <input
-              type="email"
-              className="form-input"
-              placeholder="xyz@email.com"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <div style={{ position: 'relative' }}>
+              <input
+                type="email"
+                className="form-input"
+                placeholder="name@example.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{ paddingLeft: '2.4rem' }}
+              />
+              <Mail
+                size={16}
+                style={{
+                  position: 'absolute',
+                  left: '0.85rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: 'var(--text-muted)'
+                }}
+              />
+            </div>
           </div>
 
           <div className="form-group">
             <label className="form-label">Password</label>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div style={{ position: 'relative' }}>
               <input
                 type={showPassword ? 'text' : 'password'}
                 className="form-input"
-                placeholder=""
+                placeholder="••••••••••••"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={{ paddingRight: '2.5rem' }}
+                style={{ paddingLeft: '2.4rem', paddingRight: '2.4rem' }}
+              />
+              <Lock
+                size={16}
+                style={{
+                  position: 'absolute',
+                  left: '0.85rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: 'var(--text-muted)'
+                }}
               />
               <button
                 type="button"
@@ -175,23 +242,21 @@ export const LoginPage = () => {
                 title={showPassword ? 'Hide password' : 'Show password'}
                 style={{
                   position: 'absolute',
-                  right: '0.75rem',
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'var(--text-secondary)',
-                  cursor: 'pointer',
+                  right: '0.8rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: 'var(--text-muted)',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
                   padding: 0
                 }}
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
             {isRegister && (
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
-                Must be 8–15 characters with uppercase, lowercase, number & special symbol.
+              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.4rem', display: 'block', lineHeight: 1.4 }}>
+                8–15 chars with uppercase, lowercase, number & special character.
               </span>
             )}
           </div>
@@ -200,10 +265,21 @@ export const LoginPage = () => {
             type="submit"
             className="btn-primary"
             disabled={loading}
-            style={{ width: '100%', marginTop: '0.5rem' }}
+            style={{ width: '100%', marginTop: '0.75rem', padding: '0.75rem 1rem' }}
           >
-            {loading ? 'Authenticating...' : isRegister ? 'Register & Open Wallet' : 'Sign In'}
-            <ArrowRight size={18} />
+            {loading ? (
+              <span>Authenticating...</span>
+            ) : isRegister ? (
+              <>
+                <span>Register & Open Wallet</span>
+                <ArrowRight size={16} />
+              </>
+            ) : (
+              <>
+                <span>Sign In to Wallet</span>
+                <ArrowRight size={16} />
+              </>
+            )}
           </button>
         </form>
       </div>

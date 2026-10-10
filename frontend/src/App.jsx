@@ -31,8 +31,28 @@ function MainApp() {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: 'var(--text-secondary)' }}>
-        Loading VELoop Rewards...
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          gap: '1rem',
+          color: 'var(--text-secondary)'
+        }}
+      >
+        <div
+          className="spin"
+          style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            border: '2px solid rgba(99, 102, 241, 0.2)',
+            borderTopColor: '#6366f1'
+          }}
+        />
+        <span style={{ fontSize: '0.88rem', fontWeight: 500 }}>Initializing VELoop Rewards...</span>
       </div>
     );
   }

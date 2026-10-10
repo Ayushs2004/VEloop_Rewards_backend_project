@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { walletApi, withdrawalApi } from '../api/client';
 import { CurrencyCards } from '../components/CurrencyCards';
 import { TransactionLedger } from '../components/TransactionLedger';
-import { RefreshCw, ArrowUpRight, Clock, AlertCircle } from 'lucide-react';
+import { RefreshCw, ArrowUpRight, Clock, AlertCircle, Copy, Check } from 'lucide-react';
 
 export const WalletPage = ({ onNavigateToPayout }) => {
   const [wallet, setWallet] = useState(null);
@@ -13,6 +13,8 @@ export const WalletPage = ({ onNavigateToPayout }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const [copiedWdId, setCopiedWdId] = useState(null);
+  const [lastSynced, setLastSynced] = useState(null);
 
   const fetchWalletData = async (page = 1, showRefreshSpinner = false) => {
     if (showRefreshSpinner) setRefreshing(true);
@@ -33,8 +35,9 @@ export const WalletPage = ({ onNavigateToPayout }) => {
         if (txRes.meta) setPagination(txRes.meta);
       }
       if (withdrawalsRes.success) setWithdrawals(withdrawalsRes.data);
+      setLastSynced(new Date());
     } catch (err) {
-      setError(err.message || 'Failed to load wallet data from server.');
+      setError(err.message || 'Failed to sync wallet data from server.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -49,131 +52,164 @@ export const WalletPage = ({ onNavigateToPayout }) => {
     fetchWalletData(newPage);
   };
 
+  const handleCopyWd = (id) => {
+    navigator.clipboard.writeText(id);
+    setCopiedWdId(id);
+    setTimeout(() => setCopiedWdId(null), 1800);
+  };
+
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '4rem 1rem', color: 'var(--text-secondary)' }}>
-        <RefreshCw size={32} className="spin" style={{ animation: 'spin 1s linear infinite' }} />
-        <p style={{ marginTop: '1rem', fontWeight: 600 }}>Loading verified wallet balances from backend...</p>
+      <div style={{ textAlign: 'center', padding: '6rem 1rem', color: 'var(--text-secondary)' }}>
+        <RefreshCw size={28} className="spin" style={{ color: '#818cf8', margin: '0 auto 1rem' }} />
+        <p style={{ fontWeight: 600, fontSize: '0.95rem' }}>Syncing balances with server...</p>
       </div>
     );
   }
 
   return (
-    <div>
-      {/* Header with Title & Action */}
+    <div className="fade-in">
+      {/* Page Header */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '1.5rem',
+          marginBottom: '2rem',
           flexWrap: 'wrap',
           gap: '1rem'
         }}
       >
         <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800 }}>VELoop Rewards Wallet</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-            Authoritative Server Balances & Cryptographic Multi-Currency Ledger
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 700 }}>Rewards Wallet</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '0.2rem' }}>
+            Multi-currency balances and real-time transaction ledger
+            {lastSynced && (
+              <span style={{ color: 'var(--text-muted)', marginLeft: '0.5rem' }}>
+                · Updated {lastSynced.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
+            )}
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', gap: '0.65rem' }}>
           <button
+            type="button"
             className="btn-secondary"
             onClick={() => fetchWalletData(pagination.page, true)}
             disabled={refreshing}
-            title="Refresh verified balances"
+            title="Sync balances with server"
           >
-            <RefreshCw size={16} style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
-            {refreshing ? 'Syncing...' : 'Refresh'}
+            <RefreshCw size={14} className={refreshing ? 'spin' : ''} />
+            <span>{refreshing ? 'Syncing...' : 'Sync'}</span>
           </button>
-          <button className="btn-primary" onClick={onNavigateToPayout}>
-            Withdraw / Redeem VEs <ArrowUpRight size={18} />
+          <button type="button" className="btn-primary" onClick={onNavigateToPayout}>
+            <span>Redeem VEs</span>
+            <ArrowUpRight size={16} />
           </button>
         </div>
       </div>
 
       {error && (
         <div className="alert-banner error">
-          <AlertCircle size={18} />
+          <AlertCircle size={18} style={{ flexShrink: 0 }} />
           <span>{error}</span>
         </div>
       )}
 
-      {/* 5-Currency Cards & Metrics */}
+      {/* 5-Currency Cards & Financial Metrics */}
       <CurrencyCards
         wallet={wallet}
         metrics={metrics}
         onRedeemClick={onNavigateToPayout}
       />
 
-      {/* Recent Withdrawals Tracking */}
-      {withdrawals.length > 0 && (
-        <div className="glass-card" style={{ marginBottom: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Clock size={18} color="#f59e0b" />
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Recent Redemptions & Payout Requests</h3>
+      {/* Recent Redemptions Tracking */}
+      {withdrawals && withdrawals.length > 0 && (
+        <div className="glass-card" style={{ marginBottom: '2.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Clock size={16} color="#fbbf24" />
+              </div>
+              <div>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Recent Redemptions</h3>
+                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Latest withdrawal requests and payout status</p>
+              </div>
             </div>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Status tracking</span>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+              Showing last {withdrawals.length} requests
+            </span>
           </div>
 
           <div className="table-responsive">
             <table className="table-custom">
               <thead>
                 <tr>
-                  <th>Withdrawal ID</th>
+                  <th>Request ID</th>
                   <th>Method</th>
                   <th>Payout Value</th>
                   <th>VEs Deducted</th>
                   <th>Status</th>
-                  <th>Recipient Info</th>
-                  <th>Requested At</th>
+                  <th>Recipient Destination</th>
+                  <th>Submitted At</th>
                 </tr>
               </thead>
               <tbody>
-                {withdrawals.map((w) => (
-                  <tr key={w.withdrawalId}>
-                    <td style={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>{w.withdrawalId}</td>
-                    <td style={{ fontWeight: 600 }}>{w.method}</td>
-                    <td style={{ fontWeight: 700, color: '#10b981' }}>
-                      {w.payoutCurrency === 'INR' ? '₹' : '$'}
-                      {w.payoutAmount}
-                    </td>
-                    <td style={{ color: '#c4b5fd', fontWeight: 600 }}>
-                      {Number(w.currencyAmount).toLocaleString()} VEs
-                    </td>
-                    <td>
-                      <span className={`badge-status ${w.status.toLowerCase()}`}>
-                        {w.status}
-                      </span>
-                      {w.rejectionReason && (
-                        <div style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px' }}>
-                          Reason: {w.rejectionReason}
-                        </div>
-                      )}
-                    </td>
-                    <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                      {w.payoutDetails?.maskedUpiId || w.payoutDetails?.upiId || w.payoutDetails?.email || 'N/A'}
-                    </td>
-                    <td style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      {new Date(w.requestedAt).toLocaleString(undefined, {
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </td>
-                  </tr>
-                ))}
+                {withdrawals.map((w) => {
+                  const isCopied = copiedWdId === w.withdrawalId;
+                  return (
+                    <tr key={w.withdrawalId}>
+                      <td>
+                        <button
+                          type="button"
+                          className="copy-pill"
+                          onClick={() => handleCopyWd(w.withdrawalId)}
+                          title="Click to copy Request ID"
+                        >
+                          <span>{w.withdrawalId.substring(0, 14)}...</span>
+                          {isCopied ? <Check size={11} color="#34d399" /> : <Copy size={11} />}
+                        </button>
+                      </td>
+                      <td style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{w.method}</td>
+                      <td className="tabular-nums" style={{ fontWeight: 700, color: '#34d399' }}>
+                        {w.payoutCurrency === 'INR' ? '₹' : '$'}
+                        {w.payoutAmount}
+                      </td>
+                      <td className="tabular-nums" style={{ color: '#c4b5fd', fontWeight: 600 }}>
+                        {Number(w.currencyAmount).toLocaleString()} VEs
+                      </td>
+                      <td>
+                        <span className={`badge-status ${w.status.toLowerCase()}`}>
+                          {w.status}
+                        </span>
+                        {w.rejectionReason && (
+                          <div style={{ fontSize: '0.75rem', color: '#f87171', marginTop: '4px' }}>
+                            {w.rejectionReason}
+                          </div>
+                        )}
+                      </td>
+                      <td style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+                        {w.payoutDetails?.maskedUpiId || w.payoutDetails?.upiId || w.payoutDetails?.email || 'N/A'}
+                      </td>
+                      <td style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                        {new Date(w.requestedAt).toLocaleString(undefined, {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
       )}
 
-      {/* Complete Immutable Transaction Ledger */}
+      {/* Transaction Ledger Table */}
       <TransactionLedger
         transactions={transactions}
         pagination={pagination}
