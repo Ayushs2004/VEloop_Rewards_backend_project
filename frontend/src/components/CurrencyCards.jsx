@@ -23,13 +23,13 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.25rem' }}>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#c4b5fd', fontSize: '0.82rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-ve)', fontSize: '0.82rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 <Coins size={16} />
                 <span>Primary Balance Currency</span>
                 <span
                   style={{
-                    background: 'rgba(139, 92, 246, 0.2)',
-                    color: '#ddd6fe',
+                    background: 'rgba(139, 92, 246, 0.18)',
+                    color: 'var(--accent-ve-text)',
                     padding: '0.1rem 0.45rem',
                     borderRadius: '4px',
                     fontSize: '0.7rem',
@@ -47,20 +47,20 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
                     fontSize: '2.6rem',
                     fontWeight: 800,
                     letterSpacing: '-0.03em',
-                    color: '#ffffff',
+                    color: 'var(--text-primary)',
                     lineHeight: 1.1
                   }}
                 >
                   {vesAmount.toLocaleString()}
                 </span>
-                <span style={{ fontSize: '1.25rem', fontWeight: 700, color: '#a78bfa' }}>VEs</span>
+                <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--accent-ve-text)' }}>VEs</span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.65rem' }}>
                 <span
                   style={{
                     fontSize: '0.88rem',
-                    color: '#34d399',
+                    color: 'var(--color-credit)',
                     fontWeight: 600,
                     background: 'rgba(16, 185, 129, 0.1)',
                     padding: '0.2rem 0.6rem',
@@ -96,13 +96,13 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
 
         {/* SVEs Card */}
         <div className="glass-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#7dd3fc', fontSize: '0.8rem', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-sve-text)', fontSize: '0.8rem', fontWeight: 600 }}>
             <div style={{ width: '28px', height: '28px', borderRadius: '7px', background: 'rgba(56, 189, 248, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Flame size={15} color="#38bdf8" />
+              <Flame size={15} color="currentColor" />
             </div>
             <span>Special VEs (SVEs)</span>
           </div>
-          <div className="tabular-nums" style={{ fontSize: '1.65rem', fontWeight: 700, marginTop: '0.75rem', color: '#f8fafc' }}>
+          <div className="tabular-nums" style={{ fontSize: '1.65rem', fontWeight: 700, marginTop: '0.75rem', color: 'var(--text-primary)' }}>
             {Number(wallet.sves || 0).toLocaleString()}
           </div>
           <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '0.25rem' }}>
@@ -112,13 +112,13 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
 
         {/* Gems Card */}
         <div className="glass-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#fda4af', fontSize: '0.8rem', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-gem-text)', fontSize: '0.8rem', fontWeight: 600 }}>
             <div style={{ width: '28px', height: '28px', borderRadius: '7px', background: 'rgba(244, 63, 94, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Gem size={15} color="#f43f5e" />
+              <Gem size={15} color="currentColor" />
             </div>
             <span>Gems</span>
           </div>
-          <div className="tabular-nums" style={{ fontSize: '1.65rem', fontWeight: 700, marginTop: '0.75rem', color: '#f8fafc' }}>
+          <div className="tabular-nums" style={{ fontSize: '1.65rem', fontWeight: 700, marginTop: '0.75rem', color: 'var(--text-primary)' }}>
             {Number(wallet.gems || 0).toLocaleString()}
           </div>
           <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '0.25rem' }}>
@@ -128,13 +128,13 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
 
         {/* Tokens Card */}
         <div className="glass-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#6ee7b7', fontSize: '0.8rem', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-token-text)', fontSize: '0.8rem', fontWeight: 600 }}>
             <div style={{ width: '28px', height: '28px', borderRadius: '7px', background: 'rgba(16, 185, 129, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Award size={15} color="#10b981" />
+              <Award size={15} color="currentColor" />
             </div>
             <span>Tokens</span>
           </div>
-          <div className="tabular-nums" style={{ fontSize: '1.65rem', fontWeight: 700, marginTop: '0.75rem', color: '#f8fafc' }}>
+          <div className="tabular-nums" style={{ fontSize: '1.65rem', fontWeight: 700, marginTop: '0.75rem', color: 'var(--text-primary)' }}>
             {Number(wallet.tokens || 0).toLocaleString()}
           </div>
           <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '0.25rem' }}>
@@ -144,13 +144,13 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
 
         {/* Spins Card */}
         <div className="glass-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#fde68a', fontSize: '0.8rem', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-spin-text)', fontSize: '0.8rem', fontWeight: 600 }}>
             <div style={{ width: '28px', height: '28px', borderRadius: '7px', background: 'rgba(245, 158, 11, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Disc size={15} color="#f59e0b" />
+              <Disc size={15} color="currentColor" />
             </div>
             <span>Lucky Spins</span>
           </div>
-          <div className="tabular-nums" style={{ fontSize: '1.65rem', fontWeight: 700, marginTop: '0.75rem', color: '#f8fafc' }}>
+          <div className="tabular-nums" style={{ fontSize: '1.65rem', fontWeight: 700, marginTop: '0.75rem', color: 'var(--text-primary)' }}>
             {Number(wallet.spins || 0).toLocaleString()}
           </div>
           <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '0.25rem' }}>
@@ -168,18 +168,18 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
             gap: '1.5rem',
             padding: '1.15rem 1.5rem',
-            background: 'rgba(15, 21, 35, 0.65)'
+            background: 'var(--bg-card)'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <TrendingUp size={18} color="#10b981" />
+              <TrendingUp size={18} color="var(--color-credit)" />
             </div>
             <div>
               <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.04em' }}>
                 Lifetime Earned
               </div>
-              <div className="tabular-nums" style={{ fontSize: '1.25rem', fontWeight: 700, color: '#34d399', marginTop: '0.15rem' }}>
+              <div className="tabular-nums" style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-credit)', marginTop: '0.15rem' }}>
                 +{Number(metrics.totalCreditedVEs || 0).toLocaleString()} VEs
               </div>
             </div>
@@ -187,13 +187,13 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <TrendingDown size={18} color="#f59e0b" />
+              <TrendingDown size={18} color="var(--color-debit)" />
             </div>
             <div>
               <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.04em' }}>
                 Lifetime Redeemed
               </div>
-              <div className="tabular-nums" style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fbbf24', marginTop: '0.15rem' }}>
+              <div className="tabular-nums" style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-debit)', marginTop: '0.15rem' }}>
                 -{Number(metrics.totalDebitedVEs || 0).toLocaleString()} VEs
               </div>
             </div>
@@ -201,13 +201,13 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(139, 92, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Coins size={18} color="#a78bfa" />
+              <Coins size={18} color="var(--accent-ve)" />
             </div>
             <div>
               <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.04em' }}>
                 Net Ledger Balance
               </div>
-              <div className="tabular-nums" style={{ fontSize: '1.25rem', fontWeight: 700, color: '#c4b5fd', marginTop: '0.15rem' }}>
+              <div className="tabular-nums" style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--accent-ve)', marginTop: '0.15rem' }}>
                 {Number(metrics.netVEsBalance || wallet.ves || 0).toLocaleString()} VEs
               </div>
             </div>

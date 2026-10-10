@@ -87,13 +87,13 @@ export const Navbar = ({ activePage, setActivePage, walletBalance }) => {
                 borderRadius: '9999px',
                 background: 'rgba(139, 92, 246, 0.12)',
                 border: '1px solid rgba(139, 92, 246, 0.3)',
-                color: '#c4b5fd',
+                color: 'var(--accent-ve)',
                 fontSize: '0.82rem',
                 fontWeight: 600
               }}
               title={`240 VEs = ₹1.00 (~₹${(Number(walletBalance) / 240).toFixed(2)})`}
             >
-              <span style={{ color: '#a78bfa' }}>◆</span>
+              <span style={{ color: 'var(--accent-ve-text)' }}>◆</span>
               <span className="tabular-nums">{Number(walletBalance).toLocaleString()} VEs</span>
             </div>
           )}

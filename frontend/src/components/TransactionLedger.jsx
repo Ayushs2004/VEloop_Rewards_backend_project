@@ -100,8 +100,8 @@ export const TransactionLedger = ({ transactions, pagination, onPageChange, load
                   borderRadius: '5px',
                   fontSize: '0.75rem',
                   fontWeight: 600,
-                  color: filterType === type ? '#ffffff' : 'var(--text-muted)',
-                  background: filterType === type ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+                  color: filterType === type ? 'var(--text-primary)' : 'var(--text-muted)',
+                  background: filterType === type ? 'var(--border-strong)' : 'transparent',
                   cursor: 'pointer'
                 }}
               >
@@ -186,7 +186,7 @@ export const TransactionLedger = ({ transactions, pagination, onPageChange, load
                         style={{
                           fontWeight: 700,
                           fontSize: '0.92rem',
-                          color: isCredit ? '#34d399' : '#f87171',
+                          color: isCredit ? 'var(--color-credit)' : 'var(--color-debit)',
                           whiteSpace: 'nowrap'
                         }}
                       >
@@ -196,7 +196,7 @@ export const TransactionLedger = ({ transactions, pagination, onPageChange, load
                       <td className="tabular-nums" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                         <span>{Number(tx.balanceBefore).toLocaleString()}</span>
                         <span style={{ color: 'var(--text-muted)', margin: '0 4px' }}>→</span>
-                        <span style={{ color: '#c4b5fd', fontWeight: 600 }}>{Number(tx.balanceAfter).toLocaleString()}</span>
+                        <span style={{ color: 'var(--accent-ve)', fontWeight: 600 }}>{Number(tx.balanceAfter).toLocaleString()}</span>
                       </td>
                       <td style={{ fontSize: '0.78rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                         {new Date(tx.createdAt).toLocaleString(undefined, {

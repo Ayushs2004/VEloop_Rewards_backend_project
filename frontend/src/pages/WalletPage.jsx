@@ -172,11 +172,11 @@ export const WalletPage = ({ onNavigateToPayout }) => {
                         </button>
                       </td>
                       <td style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{w.method}</td>
-                      <td className="tabular-nums" style={{ fontWeight: 700, color: '#34d399' }}>
+                      <td className="tabular-nums" style={{ fontWeight: 700, color: 'var(--color-credit)' }}>
                         {w.payoutCurrency === 'INR' ? '₹' : '$'}
                         {w.payoutAmount}
                       </td>
-                      <td className="tabular-nums" style={{ color: '#c4b5fd', fontWeight: 600 }}>
+                      <td className="tabular-nums" style={{ color: 'var(--accent-ve)', fontWeight: 600 }}>
                         {Number(w.currencyAmount).toLocaleString()} VEs
                       </td>
                       <td>

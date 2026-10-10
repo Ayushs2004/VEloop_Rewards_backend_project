@@ -134,9 +134,9 @@ export const LoginPage = () => {
               borderRadius: '7px',
               fontSize: '0.85rem',
               fontWeight: 600,
-              color: !isRegister ? '#ffffff' : 'var(--text-muted)',
-              background: !isRegister ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
-              boxShadow: !isRegister ? '0 1px 3px rgba(0, 0, 0, 0.3)' : 'none',
+              color: !isRegister ? 'var(--text-primary)' : 'var(--text-muted)',
+              background: !isRegister ? 'var(--bg-card)' : 'transparent',
+              boxShadow: !isRegister ? 'var(--shadow-card)' : 'none',
               transition: 'all 0.16s ease'
             }}
           >
@@ -150,9 +150,9 @@ export const LoginPage = () => {
               borderRadius: '7px',
               fontSize: '0.85rem',
               fontWeight: 600,
-              color: isRegister ? '#ffffff' : 'var(--text-muted)',
-              background: isRegister ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
-              boxShadow: isRegister ? '0 1px 3px rgba(0, 0, 0, 0.3)' : 'none',
+              color: isRegister ? 'var(--text-primary)' : 'var(--text-muted)',
+              background: isRegister ? 'var(--bg-card)' : 'transparent',
+              boxShadow: isRegister ? 'var(--shadow-card)' : 'none',
               transition: 'all 0.16s ease'
             }}
           >

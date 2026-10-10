@@ -234,7 +234,7 @@ export const PayoutPage = ({ onBackToWallet }) => {
               </label>
               <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 Available Balance:{' '}
-                <strong className="tabular-nums" style={{ color: '#c4b5fd' }}>
+                <strong className="tabular-nums" style={{ color: 'var(--accent-ve)' }}>
                   {userBalance.toLocaleString()} VEs
                 </strong>
               </span>
@@ -311,24 +311,24 @@ export const PayoutPage = ({ onBackToWallet }) => {
                   >
                     <div
                       className="tabular-nums"
-                      style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em' }}
+                      style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}
                     >
                       {opt.payoutCurrency === 'INR' ? '₹' : '$'}
                       {opt.payoutValue}
                     </div>
                     <div
                       className="tabular-nums"
-                      style={{ fontSize: '0.82rem', fontWeight: 600, color: '#c4b5fd', marginTop: '0.35rem' }}
+                      style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--accent-ve)', marginTop: '0.35rem' }}
                     >
                       {opt.requiredAmount.toLocaleString()} VEs
                     </div>
                     <div style={{ marginTop: '0.75rem' }}>
                       {canAfford ? (
-                        <span style={{ fontSize: '0.72rem', color: '#34d399', fontWeight: 600 }}>
+                        <span style={{ fontSize: '0.72rem', color: 'var(--color-credit)', fontWeight: 600 }}>
                           ✓ Eligible
                         </span>
                       ) : (
-                        <span style={{ fontSize: '0.72rem', color: '#f87171', fontWeight: 600 }}>
+                        <span style={{ fontSize: '0.72rem', color: 'var(--color-debit)', fontWeight: 600 }}>
                           Need +{(opt.requiredAmount - userBalance).toLocaleString()} VEs
                         </span>
                       )}
@@ -430,7 +430,7 @@ export const PayoutPage = ({ onBackToWallet }) => {
 
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: 'var(--text-secondary)' }}>Payout Value:</span>
-              <span className="tabular-nums" style={{ fontWeight: 700, color: '#34d399' }}>
+              <span className="tabular-nums" style={{ fontWeight: 700, color: 'var(--color-credit)' }}>
                 {selectedOption.payoutCurrency === 'INR' ? '₹' : '$'}
                 {selectedOption.payoutValue}
               </span>
@@ -442,8 +442,8 @@ export const PayoutPage = ({ onBackToWallet }) => {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#f87171', fontWeight: 600 }}>Balance to Debit:</span>
-              <span className="tabular-nums" style={{ color: '#f87171', fontWeight: 700 }}>
+              <span style={{ color: 'var(--color-debit)', fontWeight: 600 }}>Balance to Debit:</span>
+              <span className="tabular-nums" style={{ color: 'var(--color-debit)', fontWeight: 700 }}>
                 -{selectedOption.requiredAmount.toLocaleString()} VEs
               </span>
             </div>
@@ -457,7 +457,7 @@ export const PayoutPage = ({ onBackToWallet }) => {
               }}
             >
               <span style={{ fontWeight: 600 }}>Balance After Payout:</span>
-              <span className="tabular-nums" style={{ fontWeight: 800, color: '#c4b5fd' }}>
+              <span className="tabular-nums" style={{ fontWeight: 800, color: 'var(--accent-ve)' }}>
                 {(userBalance - selectedOption.requiredAmount).toLocaleString()} VEs
               </span>
             </div>
@@ -471,7 +471,7 @@ export const PayoutPage = ({ onBackToWallet }) => {
               }}
             >
               <span style={{ color: 'var(--text-secondary)' }}>Destination Recipient:</span>
-              <span style={{ fontWeight: 600, color: '#6ee7b7' }}>
+              <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
                 {payoutDetails.upiId || payoutDetails.email}
               </span>
             </div>
@@ -558,7 +558,7 @@ export const PayoutPage = ({ onBackToWallet }) => {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: 'var(--text-muted)' }}>Updated VEs Balance:</span>
-              <span className="tabular-nums" style={{ color: '#c4b5fd', fontWeight: 700 }}>
+              <span className="tabular-nums" style={{ color: 'var(--accent-ve)', fontWeight: 700 }}>
                 {Number(successData.meta?.remainingBalance || 0).toLocaleString()} VEs
               </span>
             </div>

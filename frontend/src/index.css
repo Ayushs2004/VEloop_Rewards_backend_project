@@ -21,11 +21,20 @@
   --primary-border: rgba(99, 102, 241, 0.35);
 
   /* Currencies */
-  --accent-ve: #8b5cf6;
+  --accent-ve: #c4b5fd;
+  --accent-ve-text: #a78bfa;
   --accent-sve: #38bdf8;
+  --accent-sve-text: #7dd3fc;
   --accent-gem: #f43f5e;
+  --accent-gem-text: #fda4af;
   --accent-token: #10b981;
+  --accent-token-text: #6ee7b7;
   --accent-spin: #f59e0b;
+  --accent-spin-text: #fde68a;
+
+  /* Financial Credits & Debits */
+  --color-credit: #34d399;
+  --color-debit: #f87171;
 
   /* Typography Colors */
   --text-primary: #f8fafc;
@@ -61,9 +70,9 @@
   --bg-input: #ffffff;
 
   /* Borders */
-  --border-color: rgba(15, 23, 42, 0.08);
-  --border-subtle: rgba(15, 23, 42, 0.05);
-  --border-strong: rgba(15, 23, 42, 0.16);
+  --border-color: rgba(15, 23, 42, 0.1);
+  --border-subtle: rgba(15, 23, 42, 0.06);
+  --border-strong: rgba(15, 23, 42, 0.2);
   --border-focus: #4f46e5;
 
   /* Primary Brand */
@@ -72,21 +81,35 @@
   --primary-light: rgba(79, 70, 229, 0.08);
   --primary-border: rgba(79, 70, 229, 0.25);
 
-  /* Currencies */
-  --accent-ve: #7c3aed;
+  /* Currencies with High Contrast in Light Mode */
+  --accent-ve: #6d28d9;
+  --accent-ve-text: #7c3aed;
   --accent-sve: #0284c7;
-  --accent-gem: #e11d48;
-  --accent-token: #059669;
-  --accent-spin: #d97706;
+  --accent-sve-text: #0369a1;
+  --accent-gem: #be123c;
+  --accent-gem-text: #e11d48;
+  --accent-token: #047857;
+  --accent-token-text: #059669;
+  --accent-spin: #b45309;
+  --accent-spin-text: #d97706;
 
-  /* Typography Colors */
+  /* Financial Credits & Debits */
+  --color-credit: #047857;
+  --color-debit: #b91c1c;
+
+  /* Typography Colors - High Legibility */
   --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+
+  /* Semantic Statuses */
+  --status-pending: #b45309;
+  --status-approved: #047857;
+  --status-rejected: #b91c1c;
 
   /* Geometry & Shadows */
-  --shadow-card: 0 4px 18px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
-  --shadow-hover: 0 12px 28px -4px rgba(15, 23, 42, 0.1), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 4px 18px -2px rgba(15, 23, 42, 0.07), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 12px 28px -4px rgba(15, 23, 42, 0.12), 0 4px 10px -2px rgba(15, 23, 42, 0.06);
 }
 
 *, *::before, *::after {

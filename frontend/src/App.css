@@ -687,23 +687,24 @@
 
 /* Light Mode Visual Adaptations */
 [data-theme="light"] .navbar {
-  background: rgba(255, 255, 255, 0.92);
-  border-bottom-color: rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom-color: rgba(15, 23, 42, 0.1);
 }
 
 [data-theme="light"] .glass-card {
   background: #ffffff;
-  border-color: rgba(15, 23, 42, 0.08);
-  box-shadow: var(--shadow-card);
+  border-color: rgba(15, 23, 42, 0.1);
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
 }
 
 [data-theme="light"] .glass-card:hover {
-  border-color: rgba(15, 23, 42, 0.16);
+  border-color: rgba(15, 23, 42, 0.18);
 }
 
 [data-theme="light"] .currency-hero {
   background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%) !important;
   border-color: rgba(139, 92, 246, 0.3) !important;
+  box-shadow: 0 8px 24px -4px rgba(124, 58, 237, 0.12) !important;
 }
 
 [data-theme="light"] .currency-hero .tabular-nums,
@@ -713,17 +714,18 @@
 
 [data-theme="light"] .modal-content {
   background: #ffffff;
-  border-color: rgba(15, 23, 42, 0.12);
-  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.2);
+  border-color: rgba(15, 23, 42, 0.14);
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  color: #0f172a;
 }
 
 [data-theme="light"] .modal-overlay {
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(15, 23, 42, 0.5);
 }
 
 [data-theme="light"] .form-input {
   background: #ffffff;
-  border-color: rgba(15, 23, 42, 0.15);
+  border-color: rgba(15, 23, 42, 0.16);
   color: #0f172a;
 }
 
@@ -734,13 +736,15 @@
 }
 
 [data-theme="light"] .table-custom th {
-  background: rgba(241, 245, 249, 0.9);
-  color: #475569;
-  border-bottom-color: rgba(15, 23, 42, 0.08);
+  background: #f1f5f9;
+  color: #334155;
+  border-bottom-color: rgba(15, 23, 42, 0.1);
+  font-weight: 700;
 }
 
 [data-theme="light"] .table-custom td {
-  border-bottom-color: rgba(15, 23, 42, 0.04);
+  border-bottom-color: rgba(15, 23, 42, 0.06);
+  color: #1e293b;
 }
 
 [data-theme="light"] .table-custom tbody tr:hover td {
@@ -749,8 +753,8 @@
 
 [data-theme="light"] .btn-secondary {
   background: #ffffff;
-  border-color: rgba(15, 23, 42, 0.14);
-  color: #1e293b;
+  border-color: rgba(15, 23, 42, 0.16);
+  color: #0f172a;
 }
 
 [data-theme="light"] .btn-secondary:hover:not(:disabled) {
@@ -761,22 +765,112 @@
 
 [data-theme="light"] .user-badge {
   background: #f8fafc;
-  border-color: rgba(15, 23, 42, 0.08);
+  border-color: rgba(15, 23, 42, 0.1);
 }
 
 [data-theme="light"] .stat-box {
   background: #ffffff;
-  border-color: rgba(15, 23, 42, 0.08);
+  border-color: rgba(15, 23, 42, 0.1);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+[data-theme="light"] .stat-box-value {
+  color: #0f172a;
 }
 
 [data-theme="light"] .copy-pill {
-  background: rgba(15, 23, 42, 0.04);
-  border-color: rgba(15, 23, 42, 0.08);
-  color: #475569;
+  background: #f1f5f9;
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #334155;
 }
 
 [data-theme="light"] .copy-pill:hover {
-  background: rgba(15, 23, 42, 0.08);
+  background: #e2e8f0;
   color: #0f172a;
 }
+
+/* Light mode Status Badges */
+[data-theme="light"] .badge-status.pending {
+  background: rgba(245, 158, 11, 0.14);
+  color: #b45309;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+[data-theme="light"] .badge-status.approved,
+[data-theme="light"] .badge-status.active {
+  background: rgba(16, 185, 129, 0.14);
+  color: #047857;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+[data-theme="light"] .badge-status.rejected,
+[data-theme="light"] .badge-status.suspended {
+  background: rgba(239, 68, 68, 0.14);
+  color: #b91c1c;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* Light mode active navigation & tabs */
+[data-theme="light"] .nav-link.active {
+  color: #0f172a;
+  background: rgba(15, 23, 42, 0.07);
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+[data-theme="light"] .admin-tab.active {
+  color: #4338ca;
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+/* Global Light-Mode Safety Selectors for Inlined Accent Colors */
+[data-theme="light"] span[style*="c4b5fd"],
+[data-theme="light"] td[style*="c4b5fd"] {
+  color: #6d28d9 !important;
+}
+
+[data-theme="light"] span[style*="a78bfa"],
+[data-theme="light"] div[style*="a78bfa"] {
+  color: #7c3aed !important;
+}
+
+[data-theme="light"] span[style*="34d399"],
+[data-theme="light"] td[style*="34d399"],
+[data-theme="light"] div[style*="34d399"] {
+  color: #047857 !important;
+}
+
+[data-theme="light"] span[style*="10b981"],
+[data-theme="light"] td[style*="10b981"],
+[data-theme="light"] div[style*="10b981"] {
+  color: #047857 !important;
+}
+
+[data-theme="light"] span[style*="f87171"],
+[data-theme="light"] td[style*="f87171"],
+[data-theme="light"] div[style*="f87171"] {
+  color: #b91c1c !important;
+}
+
+[data-theme="light"] span[style*="f59e0b"],
+[data-theme="light"] td[style*="f59e0b"],
+[data-theme="light"] div[style*="f59e0b"] {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] span[style*="38bdf8"],
+[data-theme="light"] div[style*="38bdf8"] {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] span[style*="ec4899"],
+[data-theme="light"] div[style*="ec4899"] {
+  color: #be123c !important;
+}
+
+[data-theme="light"] span[style*="f472b6"],
+[data-theme="light"] div[style*="f472b6"] {
+  color: #be123c !important;
+}
+
 
