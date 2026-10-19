@@ -11,16 +11,22 @@ import {
   ChevronRight,
   Flame,
   ShieldCheck,
-  Coins
+  Coins,
+  Play,
+  RotateCw,
+  ExternalLink,
+  Award
 } from 'lucide-react';
 
 export const EcosystemRewardsHub = ({ wallet, onNavigateToPayout }) => {
   const [streakClaimed, setStreakClaimed] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
-  const [activeTab, setActiveTab] = useState('streak'); // 'streak' | 'spins' | 'quests' | 'referrals'
+  const [activeTab, setActiveTab] = useState('all'); // 'all' | 'ads' | 'streak' | 'spins' | 'referrals'
   const [spinning, setSpinning] = useState(false);
   const [spinResult, setSpinResult] = useState(null);
   const [spinsLeft, setSpinsLeft] = useState(wallet?.spins || 3);
+  const [watchingAd, setWatchingAd] = useState(false);
+  const [adSuccess, setAdSuccess] = useState(false);
 
   const streakDays = [
     { day: 1, reward: '+50 VEs', done: true },
@@ -29,7 +35,7 @@ export const EcosystemRewardsHub = ({ wallet, onNavigateToPayout }) => {
     { day: 4, reward: '+150 VEs', active: !streakClaimed, done: streakClaimed },
     { day: 5, reward: '+200 VEs', done: false },
     { day: 6, reward: '+300 VEs', done: false },
-    { day: 7, reward: 'Mystery Box', done: false, bonus: true }
+    { day: 7, reward: 'Mystery Chest', done: false, bonus: true }
   ];
 
   const handleClaimStreak = () => {
@@ -38,7 +44,7 @@ export const EcosystemRewardsHub = ({ wallet, onNavigateToPayout }) => {
   };
 
   const handleCopyReferral = () => {
-    navigator.clipboard.writeText('VELOOP-REWARDS-2026');
+    navigator.clipboard.writeText('https://www.velooprewards.in/ref/VELOOP2026');
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
   };
@@ -49,17 +55,29 @@ export const EcosystemRewardsHub = ({ wallet, onNavigateToPayout }) => {
     setSpinResult(null);
 
     setTimeout(() => {
-      const outcomes = ['+100 VEs', '+25 SVEs', '+10 Gems', '+50 VEs', '+5 Tokens'];
+      const outcomes = ['+150 VEs', '+50 SVEs', '+15 Gems', '+100 VEs', '+10 Tokens'];
       const won = outcomes[Math.floor(Math.random() * outcomes.length)];
       setSpinResult(won);
       setSpinsLeft((prev) => Math.max(0, prev - 1));
       setSpinning(false);
-    }, 1200);
+    }, 1500);
+  };
+
+  const handleWatchAd = () => {
+    if (watchingAd) return;
+    setWatchingAd(true);
+    setAdSuccess(false);
+
+    setTimeout(() => {
+      setWatchingAd(false);
+      setAdSuccess(true);
+      setTimeout(() => setAdSuccess(false), 3000);
+    }, 2000);
   };
 
   return (
-    <div className="glass-card" style={{ marginBottom: '2.5rem', padding: '1.75rem' }}>
-      {/* Header & Section Title */}
+    <div style={{ marginBottom: '2.5rem' }}>
+      {/* Section Header with velooprewards.in styling */}
       <div
         style={{
           display: 'flex',
@@ -67,53 +85,53 @@ export const EcosystemRewardsHub = ({ wallet, onNavigateToPayout }) => {
           alignItems: 'center',
           flexWrap: 'wrap',
           gap: '1rem',
-          marginBottom: '1.5rem',
-          borderBottom: '1px solid var(--border-color)',
-          paddingBottom: '1rem'
+          marginBottom: '1.5rem'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div
             style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '10px',
-              background: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)',
+              width: '42px',
+              height: '42px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #ffc107 0%, #ff9800 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#fff',
-              boxShadow: '0 4px 15px rgba(236, 72, 153, 0.35)'
+              color: '#10121d',
+              boxShadow: '0 6px 20px rgba(255, 193, 7, 0.4)'
             }}
           >
-            <Sparkles size={18} />
+            <Sparkles size={22} />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Ecosystem Rewards Hub</h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 900, fontFamily: 'Poppins, sans-serif' }}>
+                Earning & Rewards Hub
+              </h2>
               <span
                 style={{
                   fontSize: '0.68rem',
-                  fontWeight: 700,
+                  fontWeight: 800,
                   textTransform: 'uppercase',
-                  background: 'rgba(16, 185, 129, 0.15)',
-                  color: '#34d399',
-                  border: '1px solid rgba(16, 185, 129, 0.3)',
-                  padding: '0.12rem 0.5rem',
+                  background: 'rgba(0, 255, 195, 0.15)',
+                  color: '#00ffc3',
+                  border: '1px solid rgba(0, 255, 195, 0.35)',
+                  padding: '0.15rem 0.55rem',
                   borderRadius: '9999px',
                   letterSpacing: '0.04em'
                 }}
               >
-                ● Connected Journey
+                ● Connected System
               </span>
             </div>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', marginTop: '0.2rem' }}>
-              Engage with ecosystem capabilities to earn multi-currency bonuses and cashout rewards
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '0.2rem' }}>
+              Watch ads, complete tasks, spin the wheel, and redeem real cash online – Only on VELoop Rewards
             </p>
           </div>
         </div>
 
-        {/* Segmented Activity Switcher */}
+        {/* Category Filter Pills */}
         <div
           style={{
             display: 'flex',
@@ -121,330 +139,484 @@ export const EcosystemRewardsHub = ({ wallet, onNavigateToPayout }) => {
             padding: '3px',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-subtle)',
-            gap: '2px'
+            gap: '2px',
+            flexWrap: 'wrap'
           }}
         >
-          <button
-            type="button"
-            onClick={() => setActiveTab('streak')}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              padding: '0.45rem 0.75rem',
-              borderRadius: '6px',
-              fontSize: '0.78rem',
-              fontWeight: activeTab === 'streak' ? 600 : 500,
-              color: activeTab === 'streak' ? 'var(--text-primary)' : 'var(--text-muted)',
-              background: activeTab === 'streak' ? 'var(--bg-card)' : 'transparent',
-              boxShadow: activeTab === 'streak' ? 'var(--shadow-card)' : 'none',
-              cursor: 'pointer',
-              transition: 'all 0.16s ease'
-            }}
-          >
-            <Flame size={13} color={activeTab === 'streak' ? '#f59e0b' : 'currentColor'} />
-            <span>Daily Streak</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('spins')}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              padding: '0.45rem 0.75rem',
-              borderRadius: '6px',
-              fontSize: '0.78rem',
-              fontWeight: activeTab === 'spins' ? 600 : 500,
-              color: activeTab === 'spins' ? 'var(--text-primary)' : 'var(--text-muted)',
-              background: activeTab === 'spins' ? 'var(--bg-card)' : 'transparent',
-              boxShadow: activeTab === 'spins' ? 'var(--shadow-card)' : 'none',
-              cursor: 'pointer',
-              transition: 'all 0.16s ease'
-            }}
-          >
-            <Disc size={13} color={activeTab === 'spins' ? '#f59e0b' : 'currentColor'} />
-            <span>Lucky Spin</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('quests')}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              padding: '0.45rem 0.75rem',
-              borderRadius: '6px',
-              fontSize: '0.78rem',
-              fontWeight: activeTab === 'quests' ? 600 : 500,
-              color: activeTab === 'quests' ? 'var(--text-primary)' : 'var(--text-muted)',
-              background: activeTab === 'quests' ? 'var(--bg-card)' : 'transparent',
-              boxShadow: activeTab === 'quests' ? 'var(--shadow-card)' : 'none',
-              cursor: 'pointer',
-              transition: 'all 0.16s ease'
-            }}
-          >
-            <Trophy size={13} color={activeTab === 'quests' ? '#8b5cf6' : 'currentColor'} />
-            <span>Quests</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('referrals')}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              padding: '0.45rem 0.75rem',
-              borderRadius: '6px',
-              fontSize: '0.78rem',
-              fontWeight: activeTab === 'referrals' ? 600 : 500,
-              color: activeTab === 'referrals' ? 'var(--text-primary)' : 'var(--text-muted)',
-              background: activeTab === 'referrals' ? 'var(--bg-card)' : 'transparent',
-              boxShadow: activeTab === 'referrals' ? 'var(--shadow-card)' : 'none',
-              cursor: 'pointer',
-              transition: 'all 0.16s ease'
-            }}
-          >
-            <Share2 size={13} color={activeTab === 'referrals' ? '#38bdf8' : 'currentColor'} />
-            <span>Referrals</span>
-          </button>
+          {[
+            { id: 'all', label: 'All Activities' },
+            { id: 'ads', label: 'Watch Ads' },
+            { id: 'streak', label: 'Daily Streak' },
+            { id: 'spins', label: 'Lucky Wheel' },
+            { id: 'referrals', label: 'Refer & Earn' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                padding: '0.45rem 0.85rem',
+                borderRadius: '8px',
+                fontSize: '0.8rem',
+                fontWeight: activeTab === tab.id ? 700 : 600,
+                color: activeTab === tab.id ? '#10121d' : 'var(--text-muted)',
+                background: activeTab === tab.id ? '#ffc107' : 'transparent',
+                boxShadow: activeTab === tab.id ? '0 4px 12px rgba(255, 193, 7, 0.3)' : 'none',
+                cursor: 'pointer',
+                transition: 'all 0.18s ease'
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* TAB 1: DAILY STREAK CHECK-IN */}
-      {activeTab === 'streak' && (
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-            <div>
-              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                🔥 4-Day Check-In Streak
-              </span>
-              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>
-                Check in consecutive days to multiply rewards and unlock the Day 7 Mystery Vault
-              </p>
-            </div>
-            <button
-              type="button"
-              className={streakClaimed ? 'btn-secondary' : 'btn-primary'}
-              onClick={handleClaimStreak}
-              disabled={streakClaimed}
-              style={{ padding: '0.55rem 1.15rem', fontSize: '0.85rem' }}
-            >
-              {streakClaimed ? (
-                <>
-                  <Check size={14} color="#34d399" />
-                  <span>Day 4 Claimed!</span>
-                </>
-              ) : (
-                <>
-                  <Zap size={14} />
-                  <span>Claim Today (+150 VEs)</span>
-                </>
-              )}
-            </button>
-          </div>
-
+      {/* Grid of Interactive Modules */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
+        {/* MODULE 1: WATCH ADS & EARN REAL CASH ONLINE (velooprewards.in Signature) */}
+        {(activeTab === 'all' || activeTab === 'ads') && (
           <div
+            className="glass-card"
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(85px, 1fr))',
-              gap: '0.65rem'
+              padding: '1.75rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              position: 'relative',
+              overflow: 'hidden',
+              background: 'linear-gradient(135deg, rgba(35, 37, 71, 0.95), rgba(28, 30, 53, 0.95))',
+              border: '1px solid rgba(59, 130, 246, 0.3)'
             }}
           >
-            {streakDays.map((s) => (
-              <div
-                key={s.day}
-                style={{
-                  background: s.active
-                    ? 'rgba(99, 102, 241, 0.15)'
-                    : s.done
-                    ? 'rgba(16, 185, 129, 0.08)'
-                    : 'var(--bg-input)',
-                  border: `1px solid ${
-                    s.active
-                      ? 'var(--primary)'
-                      : s.done
-                      ? 'rgba(16, 185, 129, 0.3)'
-                      : 'var(--border-subtle)'
-                  }`,
-                  borderRadius: 'var(--radius-md)',
-                  padding: '0.75rem 0.5rem',
-                  textAlign: 'center',
-                  boxShadow: s.active ? '0 0 12px rgba(99, 102, 241, 0.25)' : 'none',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <div style={{ fontSize: '0.72rem', color: s.done ? '#34d399' : 'var(--text-muted)', fontWeight: 600 }}>
-                  Day {s.day}
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                  <div
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#fff',
+                      boxShadow: '0 8px 20px rgba(59, 130, 246, 0.4)'
+                    }}
+                  >
+                    <Play size={20} />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 800, fontFamily: 'Poppins, sans-serif' }}>
+                      Watch Ads & Earn VEs
+                    </h3>
+                    <span style={{ fontSize: '0.75rem', color: '#60a5fa', fontWeight: 700 }}>
+                      Verified Partner Network
+                    </span>
+                  </div>
                 </div>
-                <div
+                <span
                   style={{
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    marginTop: '0.35rem',
-                    color: s.bonus ? '#f59e0b' : s.done ? 'var(--text-primary)' : 'var(--text-secondary)'
+                    fontSize: '0.72rem',
+                    fontWeight: 800,
+                    color: '#ffc107',
+                    background: 'rgba(255, 193, 7, 0.12)',
+                    padding: '0.2rem 0.5rem',
+                    borderRadius: '6px',
+                    border: '1px solid rgba(255, 193, 7, 0.3)'
                   }}
                 >
-                  {s.reward}
-                </div>
-                <div style={{ marginTop: '0.45rem', fontSize: '0.68rem' }}>
-                  {s.done ? (
-                    <span style={{ color: '#34d399', fontWeight: 700 }}>✓ Claimed</span>
-                  ) : s.active ? (
-                    <span style={{ color: '#818cf8', fontWeight: 700 }}>Ready!</span>
-                  ) : (
-                    <span style={{ color: 'var(--text-muted)' }}>Locked</span>
-                  )}
-                </div>
+                  +100 VEs / Ad
+                </span>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* TAB 2: LUCKY SPINS WHEEL */}
-      {activeTab === 'spins' && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f59e0b', fontSize: '0.85rem', fontWeight: 700 }}>
-              <Disc size={16} />
-              <span>Lucky Wheel Spin</span>
-              <span className="tabular-nums" style={{ background: 'rgba(245, 158, 11, 0.15)', padding: '0.1rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem' }}>
-                {spinsLeft} Spins Available
-              </span>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
+                Watch short sponsored videos with zero investment. Real cash rewards credited directly to your authoritative wallet ledger.
+              </p>
             </div>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', marginTop: '0.35rem', maxWidth: '420px', lineHeight: 1.45 }}>
-              Use your accumulated spins from daily logins and achievements to win instant VEs, rare Gems, and multiplier boosters.
-            </p>
-            {spinResult && (
-              <div
+
+            <div>
+              {adSuccess && (
+                <div
+                  style={{
+                    padding: '0.65rem 0.85rem',
+                    borderRadius: '8px',
+                    background: 'rgba(0, 255, 195, 0.15)',
+                    border: '1px solid rgba(0, 255, 195, 0.35)',
+                    color: '#00ffc3',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    marginBottom: '0.85rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.45rem'
+                  }}
+                >
+                  <Check size={16} />
+                  <span>Ad Completed! +100 VEs logged to your account.</span>
+                </div>
+              )}
+
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={handleWatchAd}
+                disabled={watchingAd}
                 style={{
-                  marginTop: '0.85rem',
-                  padding: '0.5rem 0.85rem',
-                  borderRadius: '6px',
-                  background: 'rgba(16, 185, 129, 0.12)',
-                  border: '1px solid rgba(16, 185, 129, 0.3)',
-                  color: '#34d399',
-                  fontWeight: 700,
-                  fontSize: '0.88rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.45rem'
+                  width: '100%',
+                  padding: '0.85rem',
+                  fontSize: '0.92rem',
+                  fontWeight: 800,
+                  background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                  boxShadow: '0 8px 24px rgba(59, 130, 246, 0.45)'
                 }}
               >
-                <Sparkles size={14} />
-                <span>Congratulations! You won: {spinResult}</span>
-              </div>
-            )}
+                {watchingAd ? (
+                  <>
+                    <RotateCw size={16} className="spin" />
+                    <span>Streaming Ad (2s)...</span>
+                  </>
+                ) : (
+                  <>
+                    <Play size={16} />
+                    <span>Watch Sponsored Ad (+100 VEs)</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
+        )}
 
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+        {/* MODULE 2: DAILY STREAK CHECK-IN BANNER */}
+        {(activeTab === 'all' || activeTab === 'streak') && (
+          <div
+            className="glass-card"
+            style={{
+              padding: '1.75rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              background: 'linear-gradient(135deg, rgba(18, 27, 48, 0.95) 0%, rgba(35, 47, 66, 0.95) 100%)',
+              border: '1px solid rgba(251, 191, 36, 0.28)'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                  <div
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(180deg, rgba(251, 191, 36, 0.25), rgba(245, 158, 11, 0.15))',
+                      border: '1px solid rgba(251, 191, 36, 0.35)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#fde68a'
+                    }}
+                  >
+                    <Flame size={22} color="#f59e0b" />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 800, fontFamily: 'Poppins, sans-serif' }}>
+                      Daily Streak Bonus
+                    </h3>
+                    <span style={{ fontSize: '0.75rem', color: '#fde68a', fontWeight: 700 }}>
+                      Current Streak: Day 4 Active
+                    </span>
+                  </div>
+                </div>
+                <span
+                  style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 800,
+                    color: '#00ffc3',
+                    background: 'rgba(0, 255, 195, 0.12)',
+                    padding: '0.2rem 0.5rem',
+                    borderRadius: '6px'
+                  }}
+                >
+                  Day 7 = Mystery Chest
+                </span>
+              </div>
+
+              {/* 7-Day Streak Tracker */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(7, 1fr)',
+                  gap: '0.35rem',
+                  marginBottom: '1.25rem'
+                }}
+              >
+                {streakDays.map((s) => (
+                  <div
+                    key={s.day}
+                    style={{
+                      padding: '0.5rem 0.2rem',
+                      borderRadius: '8px',
+                      textAlign: 'center',
+                      background: s.done
+                        ? 'rgba(0, 255, 195, 0.12)'
+                        : s.active
+                        ? 'rgba(255, 193, 7, 0.2)'
+                        : 'rgba(255, 255, 255, 0.04)',
+                      border: s.done
+                        ? '1px solid rgba(0, 255, 195, 0.35)'
+                        : s.active
+                        ? '1px solid #ffc107'
+                        : '1px solid var(--border-subtle)',
+                      boxShadow: s.active ? '0 0 12px rgba(255, 193, 7, 0.35)' : 'none'
+                    }}
+                  >
+                    <div style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)' }}>
+                      D{s.day}
+                    </div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 800, color: s.done ? '#00ffc3' : s.active ? '#ffc107' : 'var(--text-primary)', marginTop: '0.2rem' }}>
+                      {s.done ? <Check size={12} style={{ margin: '0 auto' }} /> : s.reward}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={handleClaimStreak}
+              disabled={streakClaimed}
+              style={{
+                width: '100%',
+                padding: '0.85rem',
+                fontSize: '0.92rem',
+                fontWeight: 900,
+                background: streakClaimed
+                  ? 'rgba(0, 255, 195, 0.15)'
+                  : 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                color: streakClaimed ? '#00ffc3' : '#181a2a',
+                border: streakClaimed ? '1px solid rgba(0, 255, 195, 0.3)' : 'none',
+                boxShadow: streakClaimed ? 'none' : '0 10px 26px rgba(245, 158, 11, 0.35)'
+              }}
+            >
+              {streakClaimed ? '✓ Day 4 Claimed (+150 VEs)' : 'Claim Day 4 Reward (+150 VEs)'}
+            </button>
+          </div>
+        )}
+
+        {/* MODULE 3: LUCKY SPIN WHEEL */}
+        {(activeTab === 'all' || activeTab === 'spins') && (
+          <div
+            className="glass-card"
+            style={{
+              padding: '1.75rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              background: 'linear-gradient(135deg, rgba(35, 37, 71, 0.95), rgba(28, 30, 53, 0.95))',
+              border: '1px solid rgba(255, 110, 169, 0.3)'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                  <div
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(135deg, #ff6ea9, #7c5cff)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#fff',
+                      boxShadow: '0 8px 20px rgba(255, 110, 169, 0.35)'
+                    }}
+                  >
+                    <Disc size={20} className={spinning ? 'spin' : ''} />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 800, fontFamily: 'Poppins, sans-serif' }}>
+                      Lucky Spin Wheel
+                    </h3>
+                    <span style={{ fontSize: '0.75rem', color: '#ff9dc5', fontWeight: 700 }}>
+                      {spinsLeft} Spins Available
+                    </span>
+                  </div>
+                </div>
+                <span
+                  style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 800,
+                    color: '#ffc850',
+                    background: 'rgba(255, 200, 80, 0.12)',
+                    padding: '0.2rem 0.5rem',
+                    borderRadius: '6px'
+                  }}
+                >
+                  Up to +500 VEs
+                </span>
+              </div>
+
+              {/* Wheel Graphic */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '1rem 0' }}>
+                <div
+                  style={{
+                    width: '90px',
+                    height: '90px',
+                    borderRadius: '50%',
+                    background: 'conic-gradient(#ff6ea9 0deg 72deg, #7c5cff 72deg 144deg, #4da8ff 144deg 216deg, #00ffc3 216deg 288deg, #ffc107 288deg 360deg)',
+                    border: '4px solid rgba(255, 255, 255, 0.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
+                    animation: spinning ? 'spin 0.4s linear infinite' : 'none'
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      background: '#10121d',
+                      border: '2px solid #ffc107',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ffc107',
+                      fontSize: '0.75rem',
+                      fontWeight: 900
+                    }}
+                  >
+                    VE
+                  </div>
+                </div>
+              </div>
+
+              {spinResult && (
+                <div
+                  style={{
+                    textAlign: 'center',
+                    padding: '0.55rem',
+                    background: 'rgba(255, 193, 7, 0.12)',
+                    borderRadius: '8px',
+                    color: '#ffc107',
+                    fontWeight: 800,
+                    fontSize: '0.88rem',
+                    marginBottom: '0.75rem',
+                    border: '1px solid rgba(255, 193, 7, 0.3)'
+                  }}
+                >
+                  🎉 You Won {spinResult}!
+                </div>
+              )}
+            </div>
+
             <button
               type="button"
               className="btn-primary"
               onClick={handleSpinWheel}
               disabled={spinning || spinsLeft <= 0}
               style={{
-                padding: '0.75rem 1.5rem',
-                fontSize: '0.9rem',
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                borderColor: 'rgba(245, 158, 11, 0.4)',
-                boxShadow: '0 4px 18px rgba(245, 158, 11, 0.35)'
+                width: '100%',
+                padding: '0.85rem',
+                fontSize: '0.92rem',
+                fontWeight: 800,
+                background: 'linear-gradient(135deg, #ff6ea9, #7c5cff)',
+                boxShadow: '0 8px 24px rgba(255, 110, 169, 0.35)'
               }}
             >
-              <Disc size={16} className={spinning ? 'spin' : ''} />
-              <span>{spinning ? 'Spinning...' : spinsLeft > 0 ? `Spin Now (${spinsLeft} Left)` : 'No Spins Left'}</span>
+              {spinning ? 'Wheel is Rotating...' : spinsLeft > 0 ? `Spin the Wheel (${spinsLeft} left)` : 'No Spins Remaining'}
             </button>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* TAB 3: ACTIVE QUESTS */}
-      {activeTab === 'quests' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.85rem' }}>
-          <div style={{ background: 'var(--bg-input)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Account Activation</span>
-              <span style={{ fontSize: '0.75rem', color: '#34d399', fontWeight: 700 }}>✓ Completed</span>
-            </div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-              Create account and verify seed wallet (+25,000 VEs)
-            </div>
-            <div style={{ height: '4px', background: 'rgba(16, 185, 129, 0.2)', borderRadius: '2px', marginTop: '0.65rem' }}>
-              <div style={{ width: '100%', height: '100%', background: '#10b981', borderRadius: '2px' }} />
-            </div>
-          </div>
+        {/* MODULE 4: REFERRAL BONUS HUB */}
+        {(activeTab === 'all' || activeTab === 'referrals') && (
+          <div
+            className="glass-card"
+            style={{
+              padding: '1.75rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              background: 'linear-gradient(135deg, rgba(35, 37, 71, 0.95), rgba(28, 30, 53, 0.95))',
+              border: '1px solid rgba(255, 193, 7, 0.3)'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                  <div
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(135deg, #ffc107, #ff9800)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#10121d',
+                      boxShadow: '0 8px 20px rgba(255, 193, 7, 0.35)'
+                    }}
+                  >
+                    <Share2 size={20} />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 800, fontFamily: 'Poppins, sans-serif' }}>
+                      Invite Friends & Earn
+                    </h3>
+                    <span style={{ fontSize: '0.75rem', color: '#ffc107', fontWeight: 700 }}>
+                      10% Lifetime Payout Bonus
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-          <div style={{ background: 'var(--bg-input)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>First Payout Milestone</span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700 }}>1/1 Redemptions</span>
-            </div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-              Submit your first UPI or voucher cashout (+500 VEs bonus)
-            </div>
-            <div style={{ height: '4px', background: 'rgba(99, 102, 241, 0.2)', borderRadius: '2px', marginTop: '0.65rem' }}>
-              <div style={{ width: '100%', height: '100%', background: 'var(--primary)', borderRadius: '2px' }} />
-            </div>
-          </div>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
+                Share your referral link with friends. Whenever they complete an instant cashout, you receive a 10% commission credited automatically.
+              </p>
 
-          <div style={{ background: 'var(--bg-input)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Gold Tier Milestone</span>
-              <span style={{ fontSize: '0.75rem', color: '#f59e0b', fontWeight: 700 }}>25k / 50k VEs</span>
+              <div
+                style={{
+                  background: 'var(--bg-input)',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '10px',
+                  border: '1px solid var(--border-subtle)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '1rem'
+                }}
+              >
+                <span className="font-mono" style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                  VELOOP-REWARDS-2026
+                </span>
+                <span style={{ fontSize: '0.72rem', color: '#00ffc3', fontWeight: 700 }}>Active Code</span>
+              </div>
             </div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-              Accumulate 50,000 lifetime VEs to unlock VIP multiplier
-            </div>
-            <div style={{ height: '4px', background: 'rgba(245, 158, 11, 0.2)', borderRadius: '2px', marginTop: '0.65rem' }}>
-              <div style={{ width: '50%', height: '100%', background: '#f59e0b', borderRadius: '2px' }} />
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* TAB 4: REFERRAL INVITATIONS */}
-      {activeTab === 'referrals' && (
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
-          <div>
-            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#38bdf8' }}>
-              🤝 Invite Friends & Earn Together
-            </div>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', marginTop: '0.25rem', maxWidth: '440px', lineHeight: 1.45 }}>
-              Share your personal invite link. For each friend who registers and verifies their wallet, you both receive 500 VEs + 2 Lucky Wheel Spins.
-            </p>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.85rem',
-                fontWeight: 600,
-                background: 'var(--bg-input)',
-                padding: '0.55rem 0.85rem',
-                borderRadius: 'var(--radius-md)',
-                border: '1px solid var(--border-color)',
-                color: 'var(--text-primary)'
-              }}
-            >
-              VELOOP-REWARDS-2026
-            </div>
             <button
               type="button"
               className="btn-primary"
               onClick={handleCopyReferral}
-              style={{ padding: '0.55rem 0.95rem', fontSize: '0.85rem' }}
+              style={{
+                width: '100%',
+                padding: '0.85rem',
+                fontSize: '0.92rem',
+                fontWeight: 900,
+                background: 'linear-gradient(135deg, #ffc107, #ff9800)',
+                color: '#10121d',
+                boxShadow: '0 8px 24px rgba(255, 193, 7, 0.35)'
+              }}
             >
-              {copiedCode ? <Check size={14} color="#fff" /> : <Copy size={14} />}
-              <span>{copiedCode ? 'Copied!' : 'Copy Code'}</span>
+              {copiedCode ? '✓ Referral Link Copied!' : 'Copy Referral Invitation Link'}
             </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

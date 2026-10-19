@@ -66,31 +66,34 @@ export const LoginPage = () => {
         <ThemeToggle showLabel={true} />
       </div>
 
-      {/* Brand Header */}
+      {/* Brand Header - velooprewards.in Identity */}
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <div
           style={{
-            width: '54px',
-            height: '54px',
+            width: '56px',
+            height: '56px',
             margin: '0 auto 1.1rem',
-            borderRadius: '14px',
-            background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+            borderRadius: '16px',
+            background: 'linear-gradient(135deg, #181a2a 0%, #232547 100%)',
+            border: '2px solid rgba(255, 193, 7, 0.5)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 10px 28px -4px rgba(79, 70, 229, 0.45)',
-            color: '#fff'
+            boxShadow: '0 10px 28px -4px rgba(255, 193, 7, 0.35)',
+            color: '#ffc107'
           }}
         >
-          <Coins size={28} />
+          <Coins size={30} />
         </div>
-        <h1 style={{ fontSize: '1.9rem', fontWeight: 800, letterSpacing: '-0.025em' }}>
-          VELoop Rewards
+        <h1 style={{ fontSize: '2.1rem', fontWeight: 900, fontFamily: 'Poppins, sans-serif', letterSpacing: '0.02em' }}>
+          <span style={{ color: '#ffc107' }}>VE</span>
+          <span style={{ color: 'var(--text-primary)' }}>Loop</span>{' '}
+          <span style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Rewards</span>
         </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginTop: '0.4rem' }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginTop: '0.4rem', lineHeight: 1.5 }}>
           {isRegister
             ? 'Open your verified rewards account & activate wallet'
-            : 'Access multi-currency balances, streaks & instant payouts'}
+            : 'Watch ads, complete tasks & redeem instant cashouts via UPI or PayPal'}
         </p>
       </div>
 

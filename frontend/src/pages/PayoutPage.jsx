@@ -288,14 +288,14 @@ export const PayoutPage = ({ onBackToWallet }) => {
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              background: step >= 1 ? 'linear-gradient(135deg, #4f46e5, #7c3aed)' : 'var(--bg-input)',
-              color: '#fff',
+              background: step >= 1 ? 'linear-gradient(135deg, #ffc107, #ff9800)' : 'var(--bg-input)',
+              color: step >= 1 ? '#10121d' : 'var(--text-muted)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '0.8rem',
-              fontWeight: 700,
-              boxShadow: step === 1 ? '0 0 12px rgba(99, 102, 241, 0.5)' : 'none'
+              fontWeight: 800,
+              boxShadow: step === 1 ? '0 0 12px rgba(255, 193, 7, 0.5)' : 'none'
             }}
           >
             {step > 1 ? <Check size={14} /> : '1'}
@@ -308,7 +308,7 @@ export const PayoutPage = ({ onBackToWallet }) => {
           </div>
         </div>
 
-        <div style={{ flex: 1, height: '2px', background: step >= 2 ? 'var(--primary)' : 'var(--border-subtle)', margin: '0 0.5rem' }} />
+        <div style={{ flex: 1, height: '2px', background: step >= 2 ? '#ffc107' : 'var(--border-subtle)', margin: '0 0.5rem' }} />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
           <div
@@ -316,14 +316,14 @@ export const PayoutPage = ({ onBackToWallet }) => {
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              background: step >= 2 ? 'linear-gradient(135deg, #4f46e5, #7c3aed)' : 'var(--bg-input)',
-              color: step >= 2 ? '#fff' : 'var(--text-muted)',
+              background: step >= 2 ? 'linear-gradient(135deg, #ffc107, #ff9800)' : 'var(--bg-input)',
+              color: step >= 2 ? '#10121d' : 'var(--text-muted)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '0.8rem',
-              fontWeight: 700,
-              boxShadow: step === 2 ? '0 0 12px rgba(99, 102, 241, 0.5)' : 'none'
+              fontWeight: 800,
+              boxShadow: step === 2 ? '0 0 12px rgba(255, 193, 7, 0.5)' : 'none'
             }}
           >
             {step > 2 ? <Check size={14} /> : '2'}
@@ -336,7 +336,7 @@ export const PayoutPage = ({ onBackToWallet }) => {
           </div>
         </div>
 
-        <div style={{ flex: 1, height: '2px', background: step >= 3 ? '#10b981' : 'var(--border-subtle)', margin: '0 0.5rem' }} />
+        <div style={{ flex: 1, height: '2px', background: step >= 3 ? '#00ffc3' : 'var(--border-subtle)', margin: '0 0.5rem' }} />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
           <div
@@ -344,20 +344,20 @@ export const PayoutPage = ({ onBackToWallet }) => {
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              background: step === 3 ? 'linear-gradient(135deg, #059669, #10b981)' : 'var(--bg-input)',
-              color: step === 3 ? '#fff' : 'var(--text-muted)',
+              background: step === 3 ? 'linear-gradient(135deg, #00ffc3, #059669)' : 'var(--bg-input)',
+              color: step === 3 ? '#10121d' : 'var(--text-muted)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '0.8rem',
-              fontWeight: 700,
-              boxShadow: step === 3 ? '0 0 12px rgba(16, 185, 129, 0.5)' : 'none'
+              fontWeight: 800,
+              boxShadow: step === 3 ? '0 0 12px rgba(0, 255, 195, 0.5)' : 'none'
             }}
           >
             3
           </div>
           <div>
-            <div style={{ fontSize: '0.82rem', fontWeight: 700, color: step === 3 ? '#10b981' : 'var(--text-muted)' }}>
+            <div style={{ fontSize: '0.82rem', fontWeight: 700, color: step === 3 ? '#00ffc3' : 'var(--text-muted)' }}>
               Receipt
             </div>
             <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Settlement confirmation</div>

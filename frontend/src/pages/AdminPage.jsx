@@ -440,8 +440,9 @@ export const AdminPage = () => {
               Administration & Financial Control Portal
             </span>
           </div>
-          <h1 style={{ fontSize: '1.85rem', fontWeight: 800, marginTop: '0.25rem' }}>
-            VELoop Rewards System Control
+          <h1 style={{ fontSize: '1.95rem', fontWeight: 900, marginTop: '0.25rem', fontFamily: 'Poppins, sans-serif' }}>
+            <span style={{ color: '#ffc107' }}>VE</span>
+            <span style={{ color: 'var(--text-primary)' }}>Loop</span> Rewards System Control
           </h1>
         </div>
 

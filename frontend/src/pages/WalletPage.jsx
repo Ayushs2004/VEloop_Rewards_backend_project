@@ -82,9 +82,12 @@ export const WalletPage = ({ onNavigateToPayout }) => {
         }}
       >
         <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 700 }}>Rewards Wallet</h1>
+          <h1 style={{ fontSize: '1.9rem', fontWeight: 900, fontFamily: 'Poppins, sans-serif' }}>
+            <span style={{ color: '#ffc107' }}>VE</span>
+            <span style={{ color: 'var(--text-primary)' }}>Loop</span> Rewards Wallet
+          </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '0.2rem' }}>
-            Multi-currency balances and real-time transaction ledger
+            Multi-currency balances, connected earning hubs, and real-time transaction ledger
             {lastSynced && (
               <span style={{ color: 'var(--text-muted)', marginLeft: '0.5rem' }}>
                 · Updated {lastSynced.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -104,8 +107,17 @@ export const WalletPage = ({ onNavigateToPayout }) => {
             <RefreshCw size={14} className={refreshing ? 'spin' : ''} />
             <span>{refreshing ? 'Syncing...' : 'Sync'}</span>
           </button>
-          <button type="button" className="btn-primary" onClick={onNavigateToPayout}>
-            <span>Redeem VEs</span>
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={onNavigateToPayout}
+            style={{
+              fontWeight: 800,
+              background: 'linear-gradient(145deg, #3d5afe, #5c7cff)',
+              boxShadow: '0 6px 18px rgba(61, 90, 254, 0.45)'
+            }}
+          >
+            <span>Redeem Payout</span>
             <ArrowUpRight size={16} />
           </button>
         </div>

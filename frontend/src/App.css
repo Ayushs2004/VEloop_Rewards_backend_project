@@ -77,15 +77,37 @@
 }
 
 .nav-brand-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #181a2a 0%, #232547 100%);
+  border: 1px solid rgba(255, 193, 7, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #ffc107;
+  box-shadow: 0 4px 14px rgba(255, 193, 7, 0.25);
+}
+
+.country-region-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 16px;
+  background: #282c45;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
   color: #fff;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  user-select: none;
+}
+
+@media (max-width: 900px) {
+  .country-region-badge {
+    display: none;
+  }
 }
 
 .nav-links {
@@ -175,32 +197,35 @@
 .navbar-balance-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: 9999px;
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  color: var(--accent-ve);
-  font-size: 0.82rem;
-  font-weight: 600;
+  gap: 0.5rem;
+  padding: 0.38rem 0.85rem;
+  border-radius: 25px;
+  background: #2e3147;
+  border: 1px solid rgba(255, 193, 7, 0.35);
+  color: #ffc107;
+  font-size: 0.84rem;
+  font-weight: 700;
+  font-family: var(--font-display);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
 }
 
 .navbar-balance-chip:hover {
-  background: rgba(139, 92, 246, 0.2);
-  border-color: rgba(139, 92, 246, 0.5);
+  background: #393d59;
+  border-color: rgba(255, 193, 7, 0.6);
   transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(255, 193, 7, 0.25);
 }
 
 .balance-inr-tag {
   font-size: 0.72rem;
-  color: var(--color-credit);
-  font-weight: 700;
-  background: rgba(16, 185, 129, 0.12);
-  padding: 0.1rem 0.4rem;
+  color: #00ffc3;
+  font-weight: 800;
+  background: rgba(0, 255, 195, 0.15);
+  padding: 0.1rem 0.45rem;
   border-radius: 4px;
+  border: 1px solid rgba(0, 255, 195, 0.3);
 }
 
 .navbar-signout-btn {
