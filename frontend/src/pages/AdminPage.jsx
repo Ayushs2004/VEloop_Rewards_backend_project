@@ -490,7 +490,7 @@ export const AdminPage = () => {
         >
           <Users size={16} /> User Management
           {stats?.users?.total !== undefined && (
-            <span style={{ background: 'rgba(255,255,255,0.15)', padding: '2px 7px', borderRadius: '10px', fontSize: '0.75rem' }}>
+            <span style={{ background: 'var(--border-strong)', color: 'var(--text-primary)', padding: '2px 7px', borderRadius: '10px', fontSize: '0.75rem', fontWeight: 600 }}>
               {stats.users.total}
             </span>
           )}
@@ -533,14 +533,14 @@ export const AdminPage = () => {
             <div className="stat-box">
               <span className="stat-box-title">Total Users</span>
               <span className="stat-box-value">{stats?.users?.total ?? '—'}</span>
-              <span className="stat-box-subtitle" style={{ color: '#10b981' }}>
+              <span className="stat-box-subtitle" style={{ color: 'var(--color-credit)' }}>
                 Active: {stats?.users?.active ?? '—'}
               </span>
             </div>
 
             <div className="stat-box">
               <span className="stat-box-title">System VEs in Circulation</span>
-              <span className="stat-box-value" style={{ color: '#c4b5fd' }}>
+              <span className="stat-box-value" style={{ color: 'var(--accent-ve)' }}>
                 {stats?.circulation?.totalVEs ? Number(stats.circulation.totalVEs).toLocaleString() : '—'}
               </span>
               <span className="stat-box-subtitle">
@@ -550,7 +550,7 @@ export const AdminPage = () => {
 
             <div className="stat-box">
               <span className="stat-box-title">Pending Withdrawals</span>
-              <span className="stat-box-value" style={{ color: '#f59e0b' }}>
+              <span className="stat-box-value" style={{ color: 'var(--status-pending)' }}>
                 {stats?.withdrawals?.pending ?? 0}
               </span>
               <span className="stat-box-subtitle">
@@ -560,7 +560,7 @@ export const AdminPage = () => {
 
             <div className="stat-box">
               <span className="stat-box-title">Approved Payouts</span>
-              <span className="stat-box-value" style={{ color: '#10b981' }}>
+              <span className="stat-box-value" style={{ color: 'var(--color-credit)' }}>
                 {stats?.withdrawals?.approved ?? 0}
               </span>
               <span className="stat-box-subtitle">
@@ -570,7 +570,7 @@ export const AdminPage = () => {
 
             <div className="stat-box">
               <span className="stat-box-title">Rejected & Refunded</span>
-              <span className="stat-box-value" style={{ color: '#ef4444' }}>
+              <span className="stat-box-value" style={{ color: 'var(--color-debit)' }}>
                 {stats?.withdrawals?.rejected ?? 0}
               </span>
               <span className="stat-box-subtitle">Safely reversed in ledger</span>
@@ -583,21 +583,21 @@ export const AdminPage = () => {
               Multi-Currency System Balance Reserves
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
-              <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+              <div style={{ padding: '0.75rem', background: 'var(--bg-input)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>SVEs Reserve</div>
-                <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#38bdf8' }}>{Number(stats?.circulation?.totalSVEs || 0).toLocaleString()}</div>
+                <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--accent-sve-text)' }}>{Number(stats?.circulation?.totalSVEs || 0).toLocaleString()}</div>
               </div>
-              <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+              <div style={{ padding: '0.75rem', background: 'var(--bg-input)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Gems Reserve</div>
-                <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#ec4899' }}>{Number(stats?.circulation?.totalGems || 0).toLocaleString()}</div>
+                <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--accent-gem-text)' }}>{Number(stats?.circulation?.totalGems || 0).toLocaleString()}</div>
               </div>
-              <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+              <div style={{ padding: '0.75rem', background: 'var(--bg-input)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Tokens Reserve</div>
-                <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#f59e0b' }}>{Number(stats?.circulation?.totalTokens || 0).toLocaleString()}</div>
+                <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--accent-token-text)' }}>{Number(stats?.circulation?.totalTokens || 0).toLocaleString()}</div>
               </div>
-              <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+              <div style={{ padding: '0.75rem', background: 'var(--bg-input)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Spins Reserve</div>
-                <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#10b981' }}>{Number(stats?.circulation?.totalSpins || 0).toLocaleString()}</div>
+                <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--accent-spin-text)' }}>{Number(stats?.circulation?.totalSpins || 0).toLocaleString()}</div>
               </div>
             </div>
           </div>
@@ -1235,7 +1235,7 @@ export const AdminPage = () => {
                 </div>
                 <div>
                   <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Balance After</div>
-                  <div style={{ fontWeight: 800, color: '#c4b5fd' }}>{Number(adjustmentResult.balanceAfter).toLocaleString()} {adjustmentResult.currency}</div>
+                  <div style={{ fontWeight: 800, color: 'var(--accent-ve)' }}>{Number(adjustmentResult.balanceAfter).toLocaleString()} {adjustmentResult.currency}</div>
                 </div>
                 <div>
                   <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Transaction ID</div>

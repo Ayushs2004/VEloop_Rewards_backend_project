@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { walletApi, withdrawalApi } from '../api/client';
 import { CurrencyCards } from '../components/CurrencyCards';
+import { EcosystemRewardsHub } from '../components/EcosystemRewardsHub';
 import { TransactionLedger } from '../components/TransactionLedger';
-import { RefreshCw, ArrowUpRight, Clock, AlertCircle, Copy, Check } from 'lucide-react';
+import { RefreshCw, ArrowUpRight, Clock, AlertCircle, Copy, Check, ShieldCheck, Zap, Lock } from 'lucide-react';
 
 export const WalletPage = ({ onNavigateToPayout }) => {
   const [wallet, setWallet] = useState(null);
@@ -123,6 +124,55 @@ export const WalletPage = ({ onNavigateToPayout }) => {
         metrics={metrics}
         onRedeemClick={onNavigateToPayout}
       />
+
+      {/* Connected Ecosystem Rewards Hub */}
+      <EcosystemRewardsHub
+        wallet={wallet}
+        onNavigateToPayout={onNavigateToPayout}
+      />
+
+      {/* Trust & Security Assurance Seals */}
+      <div
+        className="glass-card"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '1rem',
+          padding: '1.25rem 1.5rem',
+          marginBottom: '2.5rem',
+          background: 'var(--bg-card)'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(99, 102, 241, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <ShieldCheck size={18} color="var(--primary)" />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.82rem', fontWeight: 700 }}>100% Server-Authoritative</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Anti-Tamper MongoDB Ledger</div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Zap size={18} color="var(--color-credit)" />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.82rem', fontWeight: 700 }}>Option A Instant Escrow</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Atomic balance debit & safe refund</div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Lock size={18} color="var(--accent-spin)" />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.82rem', fontWeight: 700 }}>Idempotent Transactions</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Zero double-spend protection</div>
+          </div>
+        </div>
+      </div>
 
       {/* Recent Redemptions Tracking */}
       {withdrawals && withdrawals.length > 0 && (

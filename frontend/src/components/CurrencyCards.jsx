@@ -92,6 +92,29 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
               </div>
             </div>
           </div>
+
+          {/* Connected VIP Rewards Tier Progress */}
+          <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.78rem', marginBottom: '0.45rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>
+                Ecosystem Tier: <strong style={{ color: 'var(--accent-ve-text)' }}>Silver Tier Member</strong>
+              </span>
+              <span style={{ color: 'var(--text-muted)' }}>
+                {vesAmount.toLocaleString()} / 50,000 VEs to Gold Tier (1.5x Multiplier)
+              </span>
+            </div>
+            <div style={{ height: '5px', background: 'var(--border-subtle)', borderRadius: '9999px', overflow: 'hidden' }}>
+              <div
+                style={{
+                  width: `${Math.min(100, Math.round((vesAmount / 50000) * 100))}%`,
+                  height: '100%',
+                  background: 'linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899)',
+                  borderRadius: '9999px',
+                  transition: 'width 0.5s ease-out'
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         {/* SVEs Card */}

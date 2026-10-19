@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Coins, Mail, Lock, User, ArrowRight, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react';
+import {
+  Coins,
+  Mail,
+  Lock,
+  User,
+  ArrowRight,
+  Eye,
+  EyeOff,
+  AlertCircle,
+  ShieldCheck,
+  CheckCircle2,
+  Sparkles,
+  Zap,
+  RefreshCw
+} from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
 
 export const LoginPage = () => {
@@ -46,70 +60,81 @@ export const LoginPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: '420px', margin: '3.5rem auto 3rem', padding: '0 1rem' }} className="fade-in">
-      {/* Top Controls */}
+    <div style={{ maxWidth: '440px', margin: '3rem auto 2.5rem', padding: '0 1rem' }} className="fade-in">
+      {/* Top Header Controls */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.25rem' }}>
         <ThemeToggle showLabel={true} />
       </div>
 
       {/* Brand Header */}
-      <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
+      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <div
           style={{
-            width: '48px',
-            height: '48px',
-            margin: '0 auto 1rem',
-            borderRadius: '12px',
+            width: '54px',
+            height: '54px',
+            margin: '0 auto 1.1rem',
+            borderRadius: '14px',
             background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 8px 24px -4px rgba(79, 70, 229, 0.45)',
+            boxShadow: '0 10px 28px -4px rgba(79, 70, 229, 0.45)',
             color: '#fff'
           }}
         >
-          <Coins size={24} />
+          <Coins size={28} />
         </div>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em' }}>VELoop Rewards</h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginTop: '0.35rem' }}>
-          {isRegister ? 'Create an account to activate your rewards wallet' : 'Sign in to manage balances & redeem payouts'}
+        <h1 style={{ fontSize: '1.9rem', fontWeight: 800, letterSpacing: '-0.025em' }}>
+          VELoop Rewards
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginTop: '0.4rem' }}>
+          {isRegister
+            ? 'Open your verified rewards account & activate wallet'
+            : 'Access multi-currency balances, streaks & instant payouts'}
         </p>
       </div>
 
-      <div className="glass-card">
-        {/* Quick Demo Access Pills */}
+      <div className="glass-card" style={{ padding: '2rem' }}>
+        {/* Quick Demo Access Bar */}
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0.5rem 0.75rem',
-            marginBottom: '1.25rem',
+            flexDirection: 'column',
+            gap: '0.5rem',
+            padding: '0.75rem',
+            marginBottom: '1.5rem',
             borderRadius: 'var(--radius-md)',
-            background: 'rgba(255, 255, 255, 0.03)',
+            background: 'rgba(99, 102, 241, 0.05)',
             border: '1px solid var(--border-subtle)'
           }}
         >
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-            Quick fill:
-          </span>
-          <div style={{ display: 'flex', gap: '0.4rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              Instant Demo Access
+            </span>
+            <span style={{ fontSize: '0.7rem', color: 'var(--accent-ve-text)' }}>1-Click Fill</span>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
             <button
               type="button"
               className="copy-pill"
               onClick={fillDemoUser}
-              title="Populate demo user credentials"
+              title="Fill regular user demo credentials"
+              style={{ padding: '0.45rem', justifyContent: 'center' }}
             >
-              Demo User
+              <User size={13} />
+              <span>Demo User</span>
             </button>
             <button
               type="button"
               className="copy-pill"
               onClick={fillDemoAdmin}
-              title="Populate admin credentials"
-              style={{ color: '#f472b6' }}
+              title="Fill administrative demo credentials"
+              style={{ padding: '0.45rem', justifyContent: 'center', color: '#f472b6', borderColor: 'rgba(244, 114, 182, 0.3)' }}
             >
-              Admin Demo
+              <ShieldCheck size={13} />
+              <span>Admin Demo</span>
             </button>
           </div>
         </div>
@@ -128,12 +153,15 @@ export const LoginPage = () => {
         >
           <button
             type="button"
-            onClick={() => { setIsRegister(false); setError(null); }}
+            onClick={() => {
+              setIsRegister(false);
+              setError(null);
+            }}
             style={{
-              padding: '0.55rem',
-              borderRadius: '7px',
-              fontSize: '0.85rem',
-              fontWeight: 600,
+              padding: '0.6rem',
+              borderRadius: '8px',
+              fontSize: '0.88rem',
+              fontWeight: 700,
               color: !isRegister ? 'var(--text-primary)' : 'var(--text-muted)',
               background: !isRegister ? 'var(--bg-card)' : 'transparent',
               boxShadow: !isRegister ? 'var(--shadow-card)' : 'none',
@@ -144,12 +172,15 @@ export const LoginPage = () => {
           </button>
           <button
             type="button"
-            onClick={() => { setIsRegister(true); setError(null); }}
+            onClick={() => {
+              setIsRegister(true);
+              setError(null);
+            }}
             style={{
-              padding: '0.55rem',
-              borderRadius: '7px',
-              fontSize: '0.85rem',
-              fontWeight: 600,
+              padding: '0.6rem',
+              borderRadius: '8px',
+              fontSize: '0.88rem',
+              fontWeight: 700,
               color: isRegister ? 'var(--text-primary)' : 'var(--text-muted)',
               background: isRegister ? 'var(--bg-card)' : 'transparent',
               boxShadow: isRegister ? 'var(--shadow-card)' : 'none',
@@ -161,7 +192,7 @@ export const LoginPage = () => {
         </div>
 
         {error && (
-          <div className="alert-banner error" style={{ padding: '0.75rem 0.95rem' }}>
+          <div className="alert-banner error" style={{ padding: '0.8rem 1rem', marginBottom: '1.25rem' }}>
             <AlertCircle size={16} style={{ flexShrink: 0 }} />
             <span>{error}</span>
           </div>
@@ -169,23 +200,23 @@ export const LoginPage = () => {
 
         <form onSubmit={handleSubmit}>
           {isRegister && (
-            <div className="form-group">
+            <div className="form-group" style={{ marginBottom: '1.1rem' }}>
               <label className="form-label">Full Name</label>
               <div style={{ position: 'relative' }}>
                 <input
                   type="text"
                   className="form-input"
-                  placeholder="Your Name"
+                  placeholder="e.g. Ayush Soni"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  style={{ paddingLeft: '2.4rem' }}
+                  style={{ paddingLeft: '2.5rem' }}
                 />
                 <User
                   size={16}
                   style={{
                     position: 'absolute',
-                    left: '0.85rem',
+                    left: '0.9rem',
                     top: '50%',
                     transform: 'translateY(-50%)',
                     color: 'var(--text-muted)'
@@ -195,7 +226,7 @@ export const LoginPage = () => {
             </div>
           )}
 
-          <div className="form-group">
+          <div className="form-group" style={{ marginBottom: '1.1rem' }}>
             <label className="form-label">Email Address</label>
             <div style={{ position: 'relative' }}>
               <input
@@ -205,13 +236,13 @@ export const LoginPage = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                style={{ paddingLeft: '2.4rem' }}
+                style={{ paddingLeft: '2.5rem' }}
               />
               <Mail
                 size={16}
                 style={{
                   position: 'absolute',
-                  left: '0.85rem',
+                  left: '0.9rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   color: 'var(--text-muted)'
@@ -220,23 +251,23 @@ export const LoginPage = () => {
             </div>
           </div>
 
-          <div className="form-group">
+          <div className="form-group" style={{ marginBottom: '1.5rem' }}>
             <label className="form-label">Password</label>
             <div style={{ position: 'relative' }}>
               <input
                 type={showPassword ? 'text' : 'password'}
                 className="form-input"
-                placeholder="ID Password"
+                placeholder="Enter password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={{ paddingLeft: '2.4rem', paddingRight: '2.4rem' }}
+                style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
               />
               <Lock
                 size={16}
                 style={{
                   position: 'absolute',
-                  left: '0.85rem',
+                  left: '0.9rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   color: 'var(--text-muted)'
@@ -248,7 +279,7 @@ export const LoginPage = () => {
                 title={showPassword ? 'Hide password' : 'Show password'}
                 style={{
                   position: 'absolute',
-                  right: '0.8rem',
+                  right: '0.85rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   color: 'var(--text-muted)',
@@ -261,8 +292,16 @@ export const LoginPage = () => {
               </button>
             </div>
             {isRegister && (
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.4rem', display: 'block', lineHeight: 1.4 }}>
-                8–15 chars with uppercase, lowercase, number & special character.
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  color: 'var(--text-muted)',
+                  marginTop: '0.4rem',
+                  display: 'block',
+                  lineHeight: 1.4
+                }}
+              >
+                8–15 chars with uppercase, lowercase, number & special symbol.
               </span>
             )}
           </div>
@@ -271,10 +310,13 @@ export const LoginPage = () => {
             type="submit"
             className="btn-primary"
             disabled={loading}
-            style={{ width: '100%', marginTop: '0.75rem', padding: '0.75rem 1rem' }}
+            style={{ width: '100%', padding: '0.85rem 1rem', fontSize: '0.95rem', fontWeight: 700 }}
           >
             {loading ? (
-              <span>Authenticating...</span>
+              <>
+                <RefreshCw size={16} className="spin" />
+                <span>Authenticating...</span>
+              </>
             ) : isRegister ? (
               <>
                 <span>Register & Open Wallet</span>
@@ -288,6 +330,32 @@ export const LoginPage = () => {
             )}
           </button>
         </form>
+      </div>
+
+      {/* Security & System Assurances */}
+      <div
+        style={{
+          marginTop: '1.75rem',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '0.5rem',
+          textAlign: 'center',
+          fontSize: '0.7rem',
+          color: 'var(--text-muted)'
+        }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
+          <ShieldCheck size={16} color="#10b981" />
+          <span>Option A Escrow</span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
+          <Lock size={16} color="var(--primary)" />
+          <span>256-bit Encrypted</span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
+          <Coins size={16} color="var(--accent-ve-text)" />
+          <span>Atomic Ledger</span>
+        </div>
       </div>
     </div>
   );
