@@ -1,5 +1,5 @@
 import React from 'react';
-import { Coins, Flame, Gem, Disc, Award, ArrowUpRight, TrendingUp, TrendingDown, ShieldCheck, Zap } from 'lucide-react';
+import { Coins, Flame, Gem, Disc, Award, ArrowUpRight, TrendingUp, TrendingDown } from 'lucide-react';
 
 export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
   if (!wallet) return null;
@@ -7,133 +7,83 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
   const vesAmount = Number(wallet.ves || 0);
   const estimatedInr = (vesAmount / 240).toFixed(2);
 
+  const currencies = [
+    { key: 'sves', label: 'SVEs', icon: Flame, value: wallet.sves, desc: 'Promotional rewards', color: 'var(--accent-sve)' },
+    { key: 'gems', label: 'Gems', icon: Gem, value: wallet.gems, desc: 'Wheel boosts', color: 'var(--accent-gem)' },
+    { key: 'tokens', label: 'Tokens', icon: Award, value: wallet.tokens, desc: 'Quest completions', color: 'var(--accent-token)' },
+    { key: 'spins', label: 'Spins', icon: Disc, value: wallet.spins, desc: 'Wheel rotations', color: 'var(--accent-spin)' }
+  ];
+
   return (
-    <div style={{ marginBottom: '2.5rem' }}>
-      {/* 5-Currency Ecosystem Grid */}
+    <div style={{ marginBottom: '2rem' }}>
       <div className="currency-grid">
-        {/* Primary VEs Hero Card - velooprewards.in Signature */}
+        {/* Primary VEs Card */}
         <div
           className="glass-card currency-hero"
           style={{
-            background: 'linear-gradient(135deg, rgba(35, 37, 71, 0.95) 0%, rgba(22, 24, 43, 0.98) 100%)',
-            borderColor: 'rgba(255, 193, 7, 0.3)',
-            boxShadow: '0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-            padding: '1.75rem',
-            position: 'relative',
-            overflow: 'hidden'
+            padding: '1.5rem',
+            borderColor: 'var(--primary-border)',
+            background: 'var(--bg-card)'
           }}
         >
-          {/* Subtle decorative glow orb */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '-60px',
-              right: '-60px',
-              width: '180px',
-              height: '180px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(255, 193, 7, 0.22), transparent 70%)',
-              pointerEvents: 'none'
-            }}
-          />
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.25rem', position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ffc107', fontSize: '0.82rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                <Coins size={16} />
-                <span>Available Coins</span>
-                <span
-                  style={{
-                    background: 'rgba(255, 193, 7, 0.16)',
-                    color: '#ffc107',
-                    padding: '0.12rem 0.5rem',
-                    borderRadius: '6px',
-                    fontSize: '0.68rem',
-                    fontWeight: 800,
-                    border: '1px solid rgba(255, 193, 7, 0.35)'
-                  }}
-                >
-                  CONVERTIBLE
-                </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--accent-ve)', fontSize: '0.78rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <Coins size={14} />
+                <span>Available VEs</span>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', marginTop: '0.6rem' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginTop: '0.4rem' }}>
                 <span
                   className="tabular-nums font-mono"
                   style={{
-                    fontSize: '2.8rem',
-                    fontWeight: 900,
-                    letterSpacing: '-0.03em',
-                    color: '#ffc107',
+                    fontSize: '2.25rem',
+                    fontWeight: 700,
+                    color: 'var(--text-primary)',
                     lineHeight: 1.1
                   }}
                 >
                   {vesAmount.toLocaleString()}
                 </span>
-                <span style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'Poppins, sans-serif' }}>VEs</span>
+                <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-secondary)' }}>VEs</span>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
-                <span
-                  style={{
-                    fontSize: '0.92rem',
-                    color: '#00ffc3',
-                    fontWeight: 800,
-                    background: 'rgba(0, 255, 195, 0.12)',
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(0, 255, 195, 0.3)'
-                  }}
-                >
-                  ≈ ₹{estimatedInr} INR
-                </span>
-                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  Standard Exchange: <strong>240 VEs = ₹1.00</strong>
+              <div style={{ marginTop: '0.5rem', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+                ≈ ₹{estimatedInr} INR
+                <span style={{ marginLeft: '0.5rem', color: 'var(--text-muted)', fontSize: '0.75rem' }}>
+                  (240 VEs = ₹1)
                 </span>
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.75rem' }}>
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={onRedeemClick}
-                style={{
-                  padding: '0.8rem 1.6rem',
-                  fontSize: '0.92rem',
-                  fontWeight: 800,
-                  background: 'linear-gradient(145deg, #3d5afe, #5c7cff)',
-                  boxShadow: '0 8px 24px rgba(61, 90, 254, 0.45)'
-                }}
-              >
-                <span>Redeem Payout</span>
-                <ArrowUpRight size={17} />
-              </button>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                <ShieldCheck size={14} color="#00ffc3" />
-                <span>Instant verified settlement</span>
-              </div>
-            </div>
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={onRedeemClick}
+              style={{ padding: '0.55rem 1.25rem', fontWeight: 600 }}
+            >
+              <span>Redeem</span>
+              <ArrowUpRight size={15} />
+            </button>
           </div>
 
-          {/* Connected VIP Level XP Progress - velooprewards.in Signature */}
-          <div style={{ marginTop: '1.5rem', paddingTop: '1.15rem', borderTop: '1px solid var(--border-subtle)', position: 'relative', zIndex: 1 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-              <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>
-                User Level: <strong style={{ color: '#ffc107' }}>LVL 2 SILVER</strong>
+          {/* Progress Bar */}
+          <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', marginBottom: '0.4rem' }}>
+              <span style={{ color: 'var(--text-secondary)' }}>
+                Progress to next level
               </span>
               <span style={{ color: 'var(--text-muted)' }}>
-                {vesAmount.toLocaleString()} / 20,000 VEs to <strong>LVL 3 GOLD (1.5x Multiplier)</strong>
+                {vesAmount.toLocaleString()} / 20,000 VEs
               </span>
             </div>
-            <div style={{ height: '8px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '9999px', overflow: 'hidden' }}>
+            <div style={{ height: '6px', background: 'var(--border-subtle)', borderRadius: '9999px', overflow: 'hidden' }}>
               <div
                 style={{
                   width: `${Math.min(100, Math.round((vesAmount / 20000) * 100))}%`,
                   height: '100%',
-                  background: 'linear-gradient(90deg, #22c55e, #14b8a6 45%, #3b82f6)',
+                  background: 'var(--primary)',
                   borderRadius: '9999px',
-                  boxShadow: '0 0 12px rgba(34, 197, 94, 0.4)',
                   transition: 'width 0.5s ease-out'
                 }}
               />
@@ -141,120 +91,68 @@ export const CurrencyCards = ({ wallet, metrics, onRedeemClick }) => {
           </div>
         </div>
 
-        {/* SVEs Card */}
-        <div className="glass-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-sve-text)', fontSize: '0.8rem', fontWeight: 700 }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(56, 189, 248, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Flame size={16} color="currentColor" />
+        {/* Secondary Currency Cards */}
+        {currencies.map((c) => {
+          const Icon = c.icon;
+          return (
+            <div key={c.key} className="glass-card" style={{ padding: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: c.color, fontSize: '0.75rem', fontWeight: 600 }}>
+                <Icon size={14} />
+                <span>{c.label}</span>
+              </div>
+              <div className="tabular-nums font-mono" style={{ fontSize: '1.5rem', fontWeight: 700, marginTop: '0.5rem', color: 'var(--text-primary)' }}>
+                {Number(c.value || 0).toLocaleString()}
+              </div>
+              <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginTop: '0.15rem' }}>
+                {c.desc}
+              </div>
             </div>
-            <span>Special VEs (SVEs)</span>
-          </div>
-          <div className="tabular-nums font-mono" style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.85rem', color: 'var(--text-primary)' }}>
-            {Number(wallet.sves || 0).toLocaleString()}
-          </div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '0.25rem' }}>
-            Promotional & campaign rewards
-          </div>
-        </div>
-
-        {/* Gems Card */}
-        <div className="glass-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-gem-text)', fontSize: '0.8rem', fontWeight: 700 }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(244, 63, 94, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Gem size={16} color="currentColor" />
-            </div>
-            <span>Gems</span>
-          </div>
-          <div className="tabular-nums font-mono" style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.85rem', color: 'var(--text-primary)' }}>
-            {Number(wallet.gems || 0).toLocaleString()}
-          </div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '0.25rem' }}>
-            Lucky wheel boosts & multipliers
-          </div>
-        </div>
-
-        {/* Tokens Card */}
-        <div className="glass-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-token-text)', fontSize: '0.8rem', fontWeight: 700 }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(0, 255, 195, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Award size={16} color="currentColor" />
-            </div>
-            <span>Tokens</span>
-          </div>
-          <div className="tabular-nums font-mono" style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.85rem', color: 'var(--text-primary)' }}>
-            {Number(wallet.tokens || 0).toLocaleString()}
-          </div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '0.25rem' }}>
-            Mission & quest completions
-          </div>
-        </div>
-
-        {/* Spins Card */}
-        <div className="glass-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-spin-text)', fontSize: '0.8rem', fontWeight: 700 }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255, 193, 7, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Disc size={16} color="currentColor" />
-            </div>
-            <span>Lucky Spins</span>
-          </div>
-          <div className="tabular-nums font-mono" style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.85rem', color: 'var(--text-primary)' }}>
-            {Number(wallet.spins || 0).toLocaleString()}
-          </div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '0.25rem' }}>
-            Active wheel rotations
-          </div>
-        </div>
+          );
+        })}
       </div>
 
-      {/* Lifetime Metrics Aggregate Strip */}
+      {/* Lifetime Metrics */}
       {metrics && (
         <div
           className="glass-card"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '1.5rem',
-            padding: '1.25rem 1.75rem',
-            background: 'var(--bg-card)'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+            gap: '1.25rem',
+            padding: '1rem 1.25rem'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-            <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: 'rgba(0, 255, 195, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <TrendingUp size={18} color="var(--color-credit)" />
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            <TrendingUp size={16} style={{ color: 'var(--color-credit)', flexShrink: 0 }} />
             <div>
-              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>
-                Lifetime Earned
+              <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+                Total Earned
               </div>
-              <div className="tabular-nums font-mono" style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--color-credit)', marginTop: '0.15rem' }}>
+              <div className="tabular-nums font-mono" style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-credit)' }}>
                 +{Number(metrics.totalCreditedVEs || 0).toLocaleString()} VEs
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-            <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: 'rgba(239, 68, 68, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <TrendingDown size={18} color="var(--color-debit)" />
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            <TrendingDown size={16} style={{ color: 'var(--color-debit)', flexShrink: 0 }} />
             <div>
-              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>
-                Lifetime Redeemed
+              <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+                Total Redeemed
               </div>
-              <div className="tabular-nums font-mono" style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--color-debit)', marginTop: '0.15rem' }}>
+              <div className="tabular-nums font-mono" style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-debit)' }}>
                 -{Number(metrics.totalDebitedVEs || 0).toLocaleString()} VEs
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-            <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: 'rgba(255, 193, 7, 0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Coins size={18} color="#ffc107" />
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            <Coins size={16} style={{ color: 'var(--accent-ve)', flexShrink: 0 }} />
             <div>
-              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>
-                Net Ledger Balance
+              <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+                Net Balance
               </div>
-              <div className="tabular-nums font-mono" style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffc107', marginTop: '0.15rem' }}>
+              <div className="tabular-nums font-mono" style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                 {Number(metrics.netVEsBalance || wallet.ves || 0).toLocaleString()} VEs
               </div>
             </div>
